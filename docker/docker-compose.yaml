@@ -1,0 +1,19 @@
+version: '3'
+services:
+  dtrust-ui-center:
+    build:
+      context: .
+    restart: always
+    container_name: dtrust-ui-center
+    image: dtrust-ui-center
+    networks:
+      - dtrustsaas_default #miwugzs #dtrustsaas_default
+    external_links:
+      - dtrust-gateway
+    ports:
+      - 38888:38888
+
+# 加入到后端网络， 默认为 dtrust_default  | docker network ls   查看
+networks:
+  dtrustsaas_default:
+    external: true
