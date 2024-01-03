@@ -169,7 +169,7 @@
                 <template slot="title">
                     {{ deptName }}
                 </template>
-                <DeptsSelect  @selectDepts="selectDepts" :depts="depts"/>
+                <DeptsSelect  @selectDepts="selectDepts" :depts="infoRest.dataPermissionDepts"/>
             </el-submenu>
         </el-menu>
       </template>
@@ -272,7 +272,7 @@
       setInterval(() => {
         this.openMessage()
       }, 100000);
-      this.isDeptsEmpty()&&(this.deptName = this.recursionDeptName(this.depts, this.userInfo.currentDept).name)
+      this.isDeptsEmpty()&&(this.deptName = this.recursionDeptName(this.infoRest.dataPermissionDepts, this.userInfo.currentDept).name)
       listenfullscreen(this.setScreen);
     },
     computed: {
@@ -285,7 +285,7 @@
       ...mapGetters([
         "userInfo",
         'roles',
-        "depts",
+        "infoRest",
         "isFullScreen",
         "tagWel",
         "tagList",
@@ -324,7 +324,7 @@
         }
       },
       isDeptsEmpty() {
-        return !isEmpty(this.depts)
+        return !isEmpty(this.infoRest.dataPermissionDepts)
       },
       selectDepts(item) {
         checkAuthority({userId: this.userInfo.userId, deptId: item.id}).then(res => {

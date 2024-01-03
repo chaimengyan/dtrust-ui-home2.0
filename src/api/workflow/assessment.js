@@ -3,7 +3,7 @@ import request from '@/router/axios'
 // 获取所有的问卷
 export function getQuestionnaireList(query) {
     return request({
-        url: `/assessment/questionnaire/getQuestionnaireList`,
+        url: `/assessment/questionnaire/list`,
         method: 'get',
         params: query
     })
