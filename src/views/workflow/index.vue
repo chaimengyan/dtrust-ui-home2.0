@@ -100,7 +100,7 @@
         <Risk
           v-if="[0, 1, 2, 4].includes(workflowRow.flowType)"
           ref="risk"
-          :assessInfoId="assessInfoId"
+          :evaluationId="evaluationId"
           @passRisk="passRisk"
           :wfIndex="4"
           :wfStep="workflowObj.steps"
@@ -210,7 +210,7 @@
         sceneId: -2,
         assetsId: -2,
         // 评估id
-        assessInfoId: -1,
+        evaluationId: '',
         // 当前工作流参数
         workflowRow: {
           workFlowName: this.$t('crudCommon.暂无'),
@@ -363,7 +363,7 @@
         if(!workflowRow) return
 
         // this.workFlowForm = workflowRow
-        const {steps, id, assetsId, businessScenarioId, assessInfoId, flowType} = workflowRow
+        const {steps, id, assetsId, businessScenarioId, evaluationId, flowType} = workflowRow
         setStore({
           name: 'workflowId',
           content: id
@@ -379,7 +379,7 @@
         this.sceneId = businessScenarioId || -2
         console.log(workflowRow,this.sceneId, '各模块数据workflowRow');
 
-        this.assessInfoId = assessInfoId || -1
+        this.evaluationId = evaluationId || ''
         this.workflowObj.id = id
         this.$nextTick(() => {
           [0, 3, 4].includes(flowType) && this.$refs.scene.echoContent(workflowRow);
@@ -493,10 +493,10 @@
       },
 
       // 评估控制资产禁用
-      changeAssetsDisabled(val, assessInfoId, steps) {
-        this.assessInfoId = assessInfoId
+      changeAssetsDisabled(val, evaluationId, steps) {
+        this.evaluationId = evaluationId
         this.workflowObj.steps = steps
-        this.workflowObj.assessInfoId = assessInfoId
+        this.workflowObj.evaluationId = evaluationId
 
         this.checkWorkFlowSteps(this.workflowObj)
       },

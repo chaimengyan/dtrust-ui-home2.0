@@ -13,15 +13,15 @@
             <div class="assessInfo">
               <div class="ai-item">
                 <span class="label">{{$t('assessment.评估名称')}}：</span>
-                <span class="value">{{assessInfo.assessName}}</span>
+                <span class="value">{{assessInfo.name}}</span>
               </div>
               <div class="ai-item">
                 <span class="label">{{$t('assessment.被评估人')}}：</span>
-                <span class="value">{{assessInfo.mail || assessInfo.mobilePhone}}</span>
+                <span class="value">{{assessInfo.evaluators.map(e => e.nickName).join('，')}}</span>
               </div>
               <div class="ai-item">
                 <span class="label">{{$t('risk.评估状态')}}：</span>
-                <span class="value">{{ assessStatusList[assessInfo.assessStatus].label}}</span>
+                <span class="value">{{ assessStatusList[assessInfo.status].label}}</span>
               </div>
             </div>
             <div class="level-box">
@@ -63,12 +63,12 @@
           </div>
         </div>
 
-        <div class="scene-right common-box">
+        <!-- <div class="scene-right common-box">
           <div class="scene-right-content">
             <i class="el-icon-cpu"></i>
             <span class="text">功能待开发</span>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -80,9 +80,9 @@
 
 <script>
 import { 
-  getResult,
-  getAllAssessScore,
-  getAssessInfoById
+  getResultsByEvaluationId,
+  getLevelAndPoint,
+  getEvaluationById
   } from "@/api/workflow/risk";
 import { mapGetters } from "vuex";
 import { assessStatusList } from "@/util/enum"
@@ -92,9 +92,9 @@ export default {
   components: {
   },
   props: {
-    assessInfoId: {
-      type: Number,
-      default: -1
+    evaluationId: {
+      type: String,
+      default: ''
     },
     wfIndex: {
       type: Number,
@@ -138,28 +138,32 @@ export default {
   methods: {
 
     toAssessment(val) {
-      const assUrl = `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?infoId=${this.assessInfoId}&level=${val.level}`;
+      const assUrl = `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?infoId=${this.evaluationId}&level=${val.level}`;
       window.open(assUrl, "_blank");
     },
    
     // 获取问卷填写结果
-    getResult(infoId) {
-      return getResult(infoId).then((res) => {
-
-        this.riskPointList = res.data.data ? Object.values(res.data.data.originalData) : []
+    getResultsByEvaluationId(evaluationId) {
+      return getResultsByEvaluationId(evaluationId).then((res) => {
+        const {result} = res.data.data
+        if(result.length === 0) return this.riskPointList = []
+        const replies = result.reduce((pre, cur) => {
+              return cur.replies.concat(pre.replies)
+            }, [])
+        this.riskPointList = replies.length !== 0 ? replies : []
       });
     },
 
     // 获取风险等级
-    getAllAssessScore(tenantId) {
-      return getAllAssessScore(tenantId).then(res => {
-        this.levelList = res.data.data.level
+    getLevelAndPoint() {
+      return getLevelAndPoint().then(res => {
+        this.levelList = res.data.data.levels
       })
     },
 
     // 根据评估id查询评估信息
-    getAssessInfoById(infoId) {
-      return getAssessInfoById(infoId).then(res => {
+    getEvaluationById(evaluationId) {
+      return getEvaluationById(evaluationId).then(res => {
         this.assessInfo = res.data.data
       })
     },
@@ -177,11 +181,11 @@ export default {
     async calculateRiskLevel(workflowRow) {
       console.log(workflowRow,'workflowRow');
       if(workflowRow && workflowRow.steps < 3) return this.isShowRisk = false
-      const {assessInfoId, steps, status, flowType } = workflowRow
+      const {evaluationId, steps, status, flowType } = workflowRow
       await Promise.all([
-                          this.getResult(assessInfoId),
-                          this.getAllAssessScore(this.userInfo.tenantId), 
-                          this.getAssessInfoById(assessInfoId)
+                          this.getResultsByEvaluationId(evaluationId),
+                          this.getLevelAndPoint(), 
+                          this.getEvaluationById(evaluationId)
                         ])
       this.isPass = true
       this.levelList.forEach((level, index) => {

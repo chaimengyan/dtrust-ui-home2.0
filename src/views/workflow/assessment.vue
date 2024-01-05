@@ -97,11 +97,17 @@
                       <i :class="isFullscreen ? 'el-icon-news' : 'el-icon-full-screen'" />
                   </div>
               </div>
-              <avue-form ref="sceneForm" :option="option" v-model="sceneForm">
+              <avue-form v-if="option.detail" ref="sceneForm" :option="option" v-model="sceneForm">
                 <template slot="typeList" slot-scope="scope" >
                   <el-tag v-for=" i in scope.value" :key="i.typeId">{{i.typeName}}</el-tag>
                 </template>
               </avue-form>
+              <ReleaseForm
+                v-else
+                ref="releaseForm"
+                :evaluationItem="evaluationItem"
+                @closeAssessmentDialog="closeAssessmentDialog"
+              />
               <div v-if="!option.detail" slot="footer" class="dialog-footer">
                   <el-button icon="el-icon-circle-plus-outline" type="primary" @click="submit">{{$t('assets.保存')}}</el-button>
                   <el-button icon="el-icon-circle-close" @click="cancel">{{$t('assets.取消')}}</el-button>
@@ -135,6 +141,7 @@ import {
   import {tableOption, qnTableOption} from "@/const/crud/workflow/assessment"
 import { mapGetters } from "vuex";
 import {isMobile, isEmail} from '@/util/validate'
+import ReleaseForm from "@/views/workflow/components/releaseForm";
  
 const defaultDrag = { qnName: i18n.t('assessment.将图标拖拽至此处'), id: -2 }
 
@@ -164,6 +171,7 @@ export default {
   },
   components: {
     draggable,
+    ReleaseForm
   },
   data() {
     return {
@@ -176,6 +184,7 @@ export default {
       // 业务场景信息字段
       sceneList: [],
       isFullscreen: false,
+      evaluationItem: {},
     };
   },
   computed: {
@@ -197,8 +206,18 @@ export default {
     
   },
   methods: {
+    // 关闭评估弹窗
+    closeAssessmentDialog(status) {
+      console.log(status, 'llllll????>>>>');
+      if(status !== 'error') {
+        this.isIcon = true
+        this.mainList = [this.sceneForm]
+        const evaluationId = status.id
+        this.$emit('changeDisabled', true, evaluationId, 3)
+      }
+    },
     startBtn() {
-      this.option = tableOption(this, this.userInfo.tenantId)
+      // this.option = tableOption(this, this.userInfo.tenantId)
       this.isIcon = false
       this.option.detail = false
     },
@@ -211,6 +230,12 @@ export default {
       this.mainList = [defaultDrag]
     },
     submit() {
+      this.evaluationItem.assetsId = this.assetsId === -1 ? null : this.assetsId
+      this.evaluationItem.sceneId = this.businessScenarioId === -2 ? null : this.businessScenarioId
+      this.evaluationItem.qnId = this.sceneForm.qnId
+      this.evaluationItem.id = this.sceneForm.id
+      this.$refs.releaseForm.releaseSave()
+return
       this.$refs.sceneForm.validate((valid,done,msg)=>{
           if(valid){
             this.sceneForm.assetsId = this.assetsId === -1 ? null : this.assetsId
@@ -279,6 +304,7 @@ export default {
     async echoContent(workflowRow) {
       await this.getQuestionnaireList({flowTypes: workflowRow.flowType})
       const { qnId, steps } = workflowRow
+      console.log(workflowRow,qnId,'??????qnId');
       if (qnId === null) return this.mainList = [defaultDrag]
       const item = this.leftList.find((m) => m.id == qnId);
       if (item) {
