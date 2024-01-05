@@ -278,11 +278,13 @@ import {
   getProjectAttributesBySceneId,
   updateAsset,
   getAllAssetsProject,
-  appUpload
+  appUpload,
+  getTableByName,
+  getAssetsFieldByTableName
   } from "@/api/workflow/assets";
 import {tableOption} from "@/const/crud/workflow/assets"
 import { mapGetters } from "vuex";
- 
+
 const defaultDrag = { projectName: i18n.t('assessment.将图标拖拽至此处'), projectId: -2 }
 
 export default {
@@ -393,9 +395,25 @@ export default {
     }
   },
   created() {
-    this.option = tableOption(this, this.userInfo.tenantId)
+    // this.option = tableOption(this, this.userInfo.tenantId)
+    this.getTable()
   },
   methods: {
+    //查询table/业务场景表格/表单配置
+    getTable() {
+      this.fullscreenLoading = true
+      getTableByName('asset').then(tableRes => {
+        getAssetsFieldByTableName('scene').then(res => {
+          this.option = {
+            ...tableRes.data.data,
+            column: res.data.data
+          };
+          tableOption(this, this.userInfo.tenantId,  false, this.option)
+          this.fullscreenLoading = false
+
+        })
+      })
+    },
     // 上传文件
     beforeUpload(file) {
         this.fullscreenLoading = true
