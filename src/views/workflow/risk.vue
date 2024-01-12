@@ -146,11 +146,12 @@ export default {
     getResultsByEvaluationId(evaluationId) {
       return getResultsByEvaluationId(evaluationId).then((res) => {
         const {result} = res.data.data
+        console.log(result, '????result');
         if(result.length === 0) return this.riskPointList = []
-        const replies = result.reduce((pre, cur) => {
-              return cur.replies.concat(pre.replies)
-            }, [])
+        const replies = result.map(x => (x.replies)).flat()
         this.riskPointList = replies.length !== 0 ? replies : []
+        console.log(this.riskPointList,'riskPointList');
+
       });
     },
 
@@ -189,7 +190,13 @@ export default {
                         ])
       this.isPass = true
       this.levelList.forEach((level, index) => {
-        const riskPoints = this.riskPointList.filter(r => (r.score < level.maxScore && r.score >= level.minScore))
+        const riskPoints = this.riskPointList.filter(r => {
+          console.log(r, 'rrrrr');
+          if(!('score') in r) {
+            r.score = 0
+          }
+          return r.score < level.maxScore && r.score >= level.minScore
+        })
         const percentage = this.percentage(riskPoints)
         this.$set(this.levelList[index], 'riskPoints', riskPoints)
         this.$set(this.levelList[index], 'percentage', percentage)

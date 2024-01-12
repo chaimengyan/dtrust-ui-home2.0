@@ -138,6 +138,10 @@ import {
   getAllAssetsBusinessScene,
   updateScene,
   } from "@/api/workflow/scene";
+  import { 
+  getTableByName,
+  getAssetsFieldByTableName
+  } from "@/api/workflow/assets";
 import {tableOption} from "@/const/crud/workflow/scene"
 import { mapGetters } from "vuex";
  
@@ -189,9 +193,22 @@ export default {
   },
   created() {
     this.getAllAssetsBusinessScene();
-    this.option = tableOption(this, this.userInfo.tenantId)
+    this.getTable()
   },
   methods: {
+    //查询table/资产表格/表单配置
+    getTable() {
+      getTableByName('scene').then(tableRes => {
+          getAssetsFieldByTableName('scene').then(res => {
+              this.option = {
+                  ...tableRes.data.data,
+                  column: res.data.data
+              };
+              tableOption(this, this.userInfo.tenantId, this.option)
+              // this.$refs.crud.refreshTable()
+          })
+      })
+    },
     editBtn() {
       this.isIcon = false
       this.option.detail = false
@@ -206,16 +223,25 @@ export default {
 
     },
     submit() {
-      if(Array.isArray(this.sceneForm.purposeOfProcessing) || typeof this.sceneForm.purposeOfProcessing === 'object') {
-        this.sceneForm.purposeOfProcessing = this.sceneForm.purposeOfProcessing.join()
+      // if(Array.isArray(this.sceneForm.purposeOfProcessing) || typeof this.sceneForm.purposeOfProcessing === 'object') {
+      //   this.sceneForm.purposeOfProcessing = this.sceneForm.purposeOfProcessing.join()
+      // }
+      // if(Array.isArray(this.sceneForm.locationsOfPartiesAccessUse)) {
+      //   this.sceneForm.locationsOfPartiesAccessUse = this.sceneForm.locationsOfPartiesAccessUse.join()
+      // }
+      // if(Array.isArray(this.sceneForm.dataSubjectsRegion)) {
+      //   this.sceneForm.dataSubjectsRegion = this.sceneForm.dataSubjectsRegion.join()
+      // }
+      let formReduce = {}
+      for(let key in this.sceneForm) {
+        if(Array.isArray(this.sceneForm[key])) {
+          this.sceneForm[key] = this.sceneForm[key].join()
+        }
+        if(key.substr(0, 1) !== '$') {
+          formReduce[key] = this.sceneForm[key]
+        }
       }
-      if(Array.isArray(this.sceneForm.locationsOfPartiesAccessUse)) {
-        this.sceneForm.locationsOfPartiesAccessUse = this.sceneForm.locationsOfPartiesAccessUse.join()
-      }
-      if(Array.isArray(this.sceneForm.dataSubjectsRegion)) {
-        this.sceneForm.dataSubjectsRegion = this.sceneForm.dataSubjectsRegion.join()
-      }
-      updateScene(this.sceneForm).then(res => {
+      updateScene(formReduce).then(res => {
         this.isIcon = true
         // this.mainList = [defaultDrag, form]
         this.mainList = [this.sceneForm]

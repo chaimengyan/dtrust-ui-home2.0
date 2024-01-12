@@ -401,16 +401,13 @@ export default {
   methods: {
     //查询table/业务场景表格/表单配置
     getTable() {
-      this.fullscreenLoading = true
       getTableByName('asset').then(tableRes => {
-        getAssetsFieldByTableName('scene').then(res => {
+        getAssetsFieldByTableName('asset').then(res => {
           this.option = {
             ...tableRes.data.data,
             column: res.data.data
           };
-          tableOption(this, this.userInfo.tenantId,  false, this.option)
-          this.fullscreenLoading = false
-
+          tableOption(this, this.userInfo.tenantId, this.option)
         })
       })
     },
@@ -533,7 +530,16 @@ export default {
         this.projectForm.organizationalSecurityMeasures = this.projectForm.organizationalSecurityMeasures.join()
       }
       this.projectForm.sceneIds = []
-      updateAsset(this.projectForm).then(res => {
+      let formReduce = {}
+      for(let key in this.projectForm) {
+        if(Array.isArray(this.projectForm[key])) {
+          this.projectForm[key] = this.projectForm[key].join()
+        }
+        if(key.substr(0, 1) !== '$') {
+          formReduce[key] = this.projectForm[key]
+        }
+      }
+      updateAsset(formReduce).then(res => {
         this.isIcon = true
         // this.mainList = [defaultDrag, form]
         this.mainList = [this.projectForm]
