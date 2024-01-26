@@ -6,6 +6,7 @@
       label-suffix=" :"
       :rules="rules"
       :model="releaseForm"
+      style="text-align: left;"
     >
       <el-form-item label="评估名称" prop="name">
         <el-input v-model="releaseForm.name" placeholder="请填写评估名称" clearable></el-input>

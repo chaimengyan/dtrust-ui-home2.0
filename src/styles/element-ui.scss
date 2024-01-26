@@ -207,3 +207,13 @@
 .el-color-picker--mini .el-color-picker__trigger {
   height: 27px;
 }
+
+// 与输入框对齐
+.el-select {
+  display: flex;
+}
+
+// 与输入框对齐
+.el-cascader {
+  display: flex;
+}

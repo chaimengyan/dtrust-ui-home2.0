@@ -191,7 +191,6 @@ export default {
       this.isPass = true
       this.levelList.forEach((level, index) => {
         const riskPoints = this.riskPointList.filter(r => {
-          console.log(r, 'rrrrr');
           if(!('score') in r) {
             r.score = 0
           }

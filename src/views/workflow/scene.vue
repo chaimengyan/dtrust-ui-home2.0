@@ -87,7 +87,7 @@
           <div class="sceneForm" v-else>
             <el-dialog  
               :visible="true" 
-              width="35%" 
+              width="70%" 
               :close-on-click-modal='false'
               @close="cancel"
               :fullscreen="isFullscreen">

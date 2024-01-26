@@ -11,6 +11,8 @@ function getSelectOption(item, tenantId) {
   })
 }
 export const tableOption = (_this, tenantId, option) => {
+  option.submitBtn = false
+  option.emptyBtn = false
   option.column.forEach((item, index) => {
     Reflect.deleteProperty(item, 'props')
 
