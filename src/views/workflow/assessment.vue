@@ -98,8 +98,8 @@
                   </div>
               </div>
               <avue-form v-if="option.detail" ref="sceneForm" :option="option" v-model="sceneForm">
-                <template slot="typeList" slot-scope="scope" >
-                  <el-tag v-for=" i in scope.value" :key="i.typeId">{{i.typeName}}</el-tag>
+                <template slot="categories" slot-scope="scope" >
+                  <el-tag v-for=" i in scope.value" :key="i.id">{{i.categoryName}}</el-tag>
                 </template>
               </avue-form>
               <ReleaseForm
@@ -109,7 +109,7 @@
                 @closeAssessmentDialog="closeAssessmentDialog"
               />
               <div v-if="!option.detail" slot="footer" class="dialog-footer">
-                  <el-button icon="el-icon-circle-plus-outline" type="primary" @click="submit">{{$t('assets.保存')}}</el-button>
+                  <el-button icon="el-icon-circle-plus-outline" :loading="btnLoading" type="primary" @click="submit">{{$t('assets.保存')}}</el-button>
                   <el-button icon="el-icon-circle-close" @click="cancel">{{$t('assets.取消')}}</el-button>
               </div>
             </el-dialog>
@@ -185,6 +185,7 @@ export default {
       sceneList: [],
       isFullscreen: false,
       evaluationItem: {},
+      btnLoading: false,
     };
   },
   computed: {
@@ -208,7 +209,7 @@ export default {
   methods: {
     // 关闭评估弹窗
     closeAssessmentDialog(status) {
-      console.log(status, 'llllll????>>>>');
+      this.btnLoading = false
       if(status !== 'error') {
         this.isIcon = true
         this.mainList = [this.sceneForm]
@@ -219,6 +220,10 @@ export default {
     startBtn() {
       // this.option = tableOption(this, this.userInfo.tenantId)
       this.isIcon = false
+      this.evaluationItem.assetsId = this.assetsId === -1 ? null : this.assetsId
+      this.evaluationItem.sceneId = this.businessScenarioId === -2 ? null : this.businessScenarioId
+      this.evaluationItem.qnId = this.sceneForm.qnId
+      this.evaluationItem.id = this.sceneForm.id
       this.option.detail = false
     },
     viewBtn() {
@@ -230,61 +235,9 @@ export default {
       this.mainList = [defaultDrag]
     },
     submit() {
-      this.evaluationItem.assetsId = this.assetsId === -1 ? null : this.assetsId
-      this.evaluationItem.sceneId = this.businessScenarioId === -2 ? null : this.businessScenarioId
-      this.evaluationItem.qnId = this.sceneForm.qnId
-      this.evaluationItem.id = this.sceneForm.id
+      this.btnLoading = true
+      
       this.$refs.releaseForm.releaseSave()
-return
-      this.$refs.sceneForm.validate((valid,done,msg)=>{
-          if(valid){
-            this.sceneForm.assetsId = this.assetsId === -1 ? null : this.assetsId
-            this.sceneForm.businessScenarioId = this.businessScenarioId === -2 ? null : this.businessScenarioId
-            // this.sceneForm.auditorId = this.userInfo.userId
-            this.sceneForm.evaluators = []
-            this.sceneForm.url =`http://116.205.172.167:38080/#/submitQnAnswer?qnId=${this.sceneForm.qnId}`
-            const { conductor } = this.sceneForm
-            
-            // // 处理被评估人的值
-            // for (let i = 0; i < conductor.length; i++) {
-            //     if(isEmail(conductor[i])) {
-            //         this.sceneForm.evaluators[i] = { mail: conductor[i] }
-            //     }else if(isMobile(conductor[i])) {
-            //         this.sceneForm.evaluators[i] = { mobilePhone: conductor[i] }
-            //     }else if(this.$refs.sceneForm.DIC.conductor.find(x => (x.userId === conductor[i]))) {
-            //         this.sceneForm.evaluators[i] = { 
-            //             evaluatorId: conductor[i]
-            //         }
-            //     }else {
-            //         this.$message.error(`${conductor[i]}既不是邮箱也不是手机号！`)
-            //         return
-            //     }
-            // }
-            // 处理被评估人的值
-            if(isEmail(conductor)) {
-                this.sceneForm.evaluators[0] = { mail: conductor }
-            }else if(isMobile(conductor)) {
-                this.sceneForm.evaluators[0] = { mobilePhone: conductor }
-            }else if(this.$refs.sceneForm.DIC.conductor.find(x => x.userId === conductor)) {
-                this.sceneForm.evaluators[0] = { 
-                    evaluatorId: conductor
-                }
-            }else {
-                this.$message.error(`${conductor}${this.$t('assessment.既不是邮箱也不是手机号')}`)
-                return
-            }
-            releaseAssessQuestionnaire(this.sceneForm).then(res => {
-              this.isIcon = true
-              this.mainList = [this.sceneForm]
-              const assessInfoId = res.data.data[0]
-              this.$emit('changeDisabled', true, assessInfoId, 3)
-              this.$message.success(res.data.message)
-              done()
-            }).catch(() => {
-              done()
-            })
-          }
-      })
     },
     cancel() {
       this.isIcon = true
@@ -307,6 +260,7 @@ return
       console.log(workflowRow,qnId,'??????qnId');
       if (qnId === null) return this.mainList = [defaultDrag]
       const item = this.leftList.find((m) => m.id == qnId);
+      console.log(item,'itemmmmmmm');
       if (item) {
         // this.mainList = [defaultDrag, item]
         this.mainList = [item]

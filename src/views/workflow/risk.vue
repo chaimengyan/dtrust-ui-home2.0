@@ -165,6 +165,7 @@ export default {
     // 根据评估id查询评估信息
     getEvaluationById(evaluationId) {
       return getEvaluationById(evaluationId).then(res => {
+        console.log(res.data.data,"dddddddd");
         this.assessInfo = res.data.data
       })
     },
@@ -203,21 +204,21 @@ export default {
          console.log(level.level, level.riskPoints.length,level.percentage, '是否满足通过')
         // 如果有中风险及以上的风险点、存在指派状态风险点、以及评估结果为拒绝的，不予通过
         if(level.level > 1 && level.riskPoints.length !== 0 && level.percentage !== 0) {
-          this.isPass = false
+          this.isPass = this.assessInfo.status === 3 ? true : false
         }
 
       })
 
-      console.log(steps, this.isPass,this.assessInfo.assessStatus, '是否通过')
+      console.log(steps, this.isPass,this.assessInfo.status, '是否通过')
 
       // 如果是审核中，工作流步骤由3切换为4
-      if(steps === 3 && this.assessInfo.assessStatus === 2) {
+      if(steps === 3 && this.assessInfo.status === 2) {
         this.$emit('passRisk', 4)
       }
 
       // 如果审核状态是通过，且工作流类型为全评估，工作流步骤由4切换为5，非全评估类型工作流步骤为4，工作流状态为1完成
       // 加当前工作流步骤和状态判断是为了防止进入死循环
-      if(steps === 4 && status == 0 && this.assessInfo.assessStatus === 3 && this.isPass ) {
+      if(steps !== 5 && status == 0 && this.assessInfo.status === 3 && this.isPass ) {
         if(flowType == 0) {
           this.$emit('passRisk', 5)
         }else {
@@ -226,7 +227,7 @@ export default {
       }
 
       // 如果审核状态为拒绝，则以状态2结束此工作流
-      if(steps === 4 && status == 0 && this.assessInfo.assessStatus == 4) {
+      if(steps === 4 && status == 0 && this.assessInfo.status == 4) {
         this.$emit('passRisk', 4, 2)
       }
 

@@ -79,13 +79,13 @@ export const stepsList = [
 export const assessStatusList = {
     
   0: {
-    type: '',
-    label: i18n.t('enum.填写中'),
-    value: 0
+      type: '',
+      label: i18n.t('enum.填写中'),
+      value: 0
     },
   1: {
         type: 'info',
-        label: i18n.t('evaluationRecord.待审核'),
+        label: i18n.t('enum.待审核'),
         value: 1
       },
   2: {
@@ -115,7 +115,7 @@ export const assessStatusList = {
   },
   7: {
       type: 'warning',
-      label: i18n.t('findList.已填写'),
+      label: i18n.t('enum.已填写'),
       value: 7
   },
 }

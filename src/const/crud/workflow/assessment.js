@@ -92,7 +92,7 @@ export const qnTableOption = (_this) => {
     },
     {
       label: _this.$t('assessment.问卷类型'),
-      prop: 'typeList',
+      prop: 'categories',
       span: 24,
       slot: true,
     },

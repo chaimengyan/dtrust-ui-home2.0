@@ -2,7 +2,7 @@
     <div>
         <el-popover
             placement="bottom"
-            width="200"
+            width="300"
             trigger="click"
             @show="openMessage">
             <div>
@@ -20,8 +20,8 @@
                         </div>
                         <div class="mes-body-row-content" v-html="item.message"></div>
                         <div class="mes-body-row-footer">
-                            {{`${item.updateBy}，${item.updateTime}` }}
-                            <i style="color: red; margin-left: 80%;" class="el-icon-delete" @click="delMessage(item.id)"></i>
+                            {{handleFooter(item) }}
+                            <i style="color: red; margin-left: 80%;display: contents;" class="el-icon-delete" @click="delMessage(item.id)"></i>
                         </div>
                     </div>
                 </div>
@@ -38,6 +38,8 @@
 
 <script>
 import { getNoticePage, readNotice, delNotice} from "@/api/admin/menu"
+import {dateFormat} from "@/util/date"
+
 export default {
     name: 'message-reminder',
 
@@ -53,6 +55,13 @@ export default {
             pageSize: 20,
             noticeList: [],
             isRead: true,
+        }
+    },
+    computed: {
+        handleFooter() {
+            return(item) => {
+                return `${item.updateBy}，${dateFormat(item.updateTime)}`
+            }
         }
     },
 mounted() {
@@ -86,6 +95,7 @@ mounted() {
 }
 </script>
 <style lang="scss" scoped>
+
 .mes-header {
   display: flex;
   justify-content: space-around;
@@ -93,6 +103,8 @@ mounted() {
 }
 
 .mes-body {
+    max-height: 400px;
+    overflow-y: scroll;
   // height: 300px;
   border-bottom: 1px solid rgb(214, 214, 214) ;
   .mes-body-row {
@@ -102,13 +114,14 @@ mounted() {
       font-size: 14px;
       font-weight: 600;
     }
-    .mes-body-row-content {
+    .mes-body-row-content {        
       font-size: 14px;
       color:rgb(93, 93, 93);
       margin: 5px;
     }
     .mes-body-row-footer {
       font-size: 14px;
+      text-align: left;
       color:rgb(122, 122, 122);
     }
   }

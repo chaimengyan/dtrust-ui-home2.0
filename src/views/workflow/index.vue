@@ -400,7 +400,7 @@
           5: true,
           6: true,
         }
-        if(this.workflowRow.status !== 0) return
+        if(this.workflowRow.status !== 0) return this.disabledObj[6] = false
 
         switch (this.workflowRow.flowType){
           case 0://合规驱动全工作流

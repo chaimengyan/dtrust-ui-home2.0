@@ -175,7 +175,8 @@ export default {
             this.releaseForm.evaluators = []
         },
         getChapterByQnId() {
-            getChapterByQnIdApi(this.releaseForm.qnId|| '').then(res => {
+            console.log(this.evaluationItem,'this.evaluationItem');
+            getChapterByQnIdApi(this.evaluationItem.qnId|| '').then(res => {
                 this.chapterOptions = res.data.data
                 const map = this.userList.map(item => ({ label: item.nickName, value: item.userId }))
                 this.options = this.chapterOptions.map((item) =>{
