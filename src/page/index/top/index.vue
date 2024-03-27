@@ -63,6 +63,12 @@
 
       <el-divider direction="vertical"></el-divider>
 
+      <el-tooltip effect="dark" :content="$t('exportTemplate.导出pdf模板')">
+        <el-button icon="el-icon-download" size="small" circle @click="openExportPDF" />
+      </el-tooltip>
+
+      <el-divider direction="vertical"></el-divider>
+
       <el-tooltip 
         effect="dark"
         :content="$t('navbar.中英文')"
@@ -142,6 +148,16 @@
             </el-submenu>
         </el-menu>
       </template>
+      <el-drawer
+        size="80%"
+        v-if="exportTemplateDialog"
+        :visible.sync="exportTemplateDialog"
+        :title="$t('exportTemplate.导出pdf模板')"
+        append-to-body
+        :close-on-click-modal="true" 
+        >
+			  <ExportTemplate />
+      </el-drawer>
     </div>
   </div>
 </template>
@@ -155,6 +171,8 @@
   import MessageReminder from './message-reminder.vue'
   import topLang from "./top-lang.vue";
   import { isEmpty } from 'lodash'
+  import ExportTemplate from '@/views/exportTemplate/index'
+
   const locationUrl = `${window.location.protocol}//${window.location.hostname}:`
   
   export default {
@@ -163,7 +181,9 @@
       MenuSelect,
       DeptsSelect,
       MessageReminder,
-      topLang
+      topLang,
+      ExportTemplate
+
     },
     name: "top",
     data() {
@@ -222,6 +242,7 @@
             href: `http://116.205.172.167:38082/#/assetsCharts/assetbusin/index`,
           },
         ],
+        exportTemplateDialog: false,
         
       };
     },
@@ -261,6 +282,10 @@
       ])
     },
     methods: {
+      // 打开导出pdf弹窗
+      openExportPDF() {
+        this.exportTemplateDialog = true
+      },
       recursionDeptName(depts, currentDept) {
         for(let dept of depts || []) {
           if(dept.id === currentDept) return dept

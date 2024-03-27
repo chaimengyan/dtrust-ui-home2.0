@@ -18,7 +18,7 @@
                                 {{ item.title }}
                             </el-badge>
                         </div>
-                        <div class="mes-body-row-content" v-html="item.message"></div>
+                        <div class="mes-body-row-content" @click="handle(item)" v-html="item.message"></div>
                         <div class="mes-body-row-footer">
                             {{handleFooter(item) }}
                             <i style="color: red; margin-left: 80%;display: contents;" class="el-icon-delete" @click="delMessage(item.id)"></i>
@@ -64,11 +64,18 @@ export default {
             }
         }
     },
-mounted() {
-    setInterval(() => {
+    created() {
         this.openMessage()
-      }, 100000);
-},
+    },
+    mounted() {
+        document.addEventListener("visibilitychange", this.openMessage);
+        setInterval(() => {
+            this.openMessage()
+        }, 10000);
+    },
+    beforeDestroy() {
+      document.removeEventListener("visibilitychange", this.openMessage);
+    },
     methods: {
         openMessage() {
             getNoticePage({
@@ -81,7 +88,10 @@ mounted() {
         },
         allRead() {
             const ids = this.noticeList.filter(x => x.status === 0).map(y => y.id)
-                ids.length !==0 && readNotice(ids).then(res => {
+                ids.length !==0 && this.readNotice(ids)
+        },
+        readNotice(ids) {
+            readNotice(ids).then(res => {
                 this.openMessage()
             })
         },
@@ -90,6 +100,10 @@ mounted() {
                 this.$message.success(res.data.message)
                 this.openMessage()
             })
+        },
+        handle(mes) {
+            // this.readNotice(mes.id)
+            this.delMessage(mes.id)
         },
     }
 }
