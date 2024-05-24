@@ -59,3 +59,11 @@ export function startEvaluationApi (data) {
         data,
     });
 }
+
+// 根据问卷id获取配置的评估
+export function getProphetByQnIdApi (qnId) {
+    return request({
+        url: `/assessment/prophet/getByQnId?qnId=${qnId}`,
+        method: 'get',
+    })
+}

@@ -224,6 +224,7 @@ export default {
       this.evaluationItem.sceneId = this.businessScenarioId === -2 ? null : this.businessScenarioId
       this.evaluationItem.qnId = this.sceneForm.qnId
       this.evaluationItem.id = this.sceneForm.id
+      this.evaluationItem.hasPrefabricate = this.sceneForm.hasPrefabricate
       this.option.detail = false
     },
     viewBtn() {

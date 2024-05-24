@@ -37,8 +37,8 @@
           :props="{ multiple: true }"
           clearable />
       </el-form-item>
-      <el-form-item v-else label="被评估人" prop="userIds">
-        <el-select v-model="releaseForm.userIds" placeholder="请选择被评估人" clearable multiple>
+      <el-form-item v-else label="被评估人" prop="evaluators">
+        <el-select v-model="releaseForm.evaluators" placeholder="请选择被评估人" clearable multiple>
           <el-option v-for="item in userList" :key="item.userId" :label="item.nickName" :value="item.userId" />
         </el-select>
       </el-form-item>
@@ -85,7 +85,8 @@ import {
     getChapterByQnIdApi,
     getByQuestionnaireApi,
     startEvaluationApi,
-    getUserList
+    getUserList,
+    getProphetByQnIdApi
 } from "@/api/workflow/assessment";
 import LogicEvaluation from "@/views/workflow/components/logicEvaluation";
 import {mapGetters} from "vuex";
@@ -128,6 +129,8 @@ export default {
         ...mapGetters(["userInfo"]),
     },
     created() {
+        console.log(this.evaluationItem ,'evaluationItem');
+        this.evaluationItem.hasPrefabricate && this.getProphetByQnId(this.evaluationItem.qnId)
         this.initReleaseForm()
         // this.getQnList()
         this.getUserList()
@@ -149,6 +152,13 @@ export default {
                 evaluators: [],
                 prefabricates: [],
             }
+        },
+        getProphetByQnId(qnId) {
+            getProphetByQnIdApi(qnId).then(res => {
+                const {mode, evaluators, ...other} = res.data.data
+                this.releaseForm = res.data.data
+                this.releaseForm.evaluators = mode === 1 ? evaluators.map(x => x.userId) : evaluators.map(x => [x.chapterId, x.userId])
+            })
         },
         // 获取全部用户
         getUserList() {
