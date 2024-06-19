@@ -63,8 +63,14 @@
 
       <el-divider direction="vertical"></el-divider>
 
-      <el-tooltip effect="dark" :content="$t('exportTemplate.导出pdf模板')">
+      <el-tooltip effect="dark" :content="$t('exportTemplate.导出报告')">
         <el-button icon="el-icon-download" size="small" circle @click="openExportPDF" />
+      </el-tooltip>
+
+      <el-divider direction="vertical"></el-divider>
+
+      <el-tooltip effect="dark" :content="$t('crudCommon.导出使用手册')">
+        <el-button v-loading.fullscreen.lock="fullscreenLoading" icon="el-icon-document" size="small" circle @click="openUserManual" />
       </el-tooltip>
 
       <el-divider direction="vertical"></el-divider>
@@ -152,7 +158,7 @@
         size="80%"
         v-if="exportTemplateDialog"
         :visible.sync="exportTemplateDialog"
-        :title="$t('exportTemplate.导出pdf模板')"
+        :title="$t('exportTemplate.导出报告')"
         append-to-body
         :close-on-click-modal="true" 
         >
@@ -162,7 +168,7 @@
   </div>
 </template>
 <script>
-  import {checkAuthority} from "@/api/admin/menu"
+  import {checkAuthority, exportUserManual} from "@/api/admin/menu"
   import {mapGetters, mapState} from "vuex";
   import {fullscreenToggel, listenfullscreen} from "@/util/util";
   import topMenu from "./top-menu";
@@ -188,8 +194,9 @@
     name: "top",
     data() {
       return {
-        // adminUrl = `http://admin.idatatrust.com`
-        adminUrl: `http://116.205.172.167:38081`,
+        fullscreenLoading: false,
+        adminUrl: `http://admin.idatatrust.com`,
+        // adminUrl: `http://116.205.172.167:38081`,
         deptName: '组织架构',
         moduleList: [],
         isShowAdimn: false,
@@ -198,48 +205,50 @@
             label: 'DPIA',
             value: 0,
             icon: 'icon-dpia',
-            // href: `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?typeIds=${29}`,
-            href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${29}`,
+            href: `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?typeIds=${29}`,
+            // href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${29}`,
           },
           {
             label: this.$t('navbar.数据出境风险自评估'),
             value: 1,
             icon: 'icon-cjfxpg',
-            // href: `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?typeIds=${30}`,
-            href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${30}`,
+            href: `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?typeIds=${30}`,
+            // href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${30}`,
           },
           {
             label: this.$t('navbar.数据跨境地图'),
             value: 2,
             icon: 'icon-map',
-            // href: `http://assets.idatatrust.com/#/assetsCharts/earth/index`,
-            href: `http://116.205.172.167:38082/#/assetsCharts/earth/index`,
+            href: `http://assets.idatatrust.com/#/assetsCharts/earth/index`,
+            // href: `http://116.205.172.167:38082/#/assetsCharts/earth/index`,
           },
           {
             label:  this.$t('navbar.PIPL'),
             value: 3,
             icon: '',
-            // href: `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?typeIds=${26}`,
-            href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${26}`,
+            href: `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?typeIds=${26}`,
+            // href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${26}`,
           },
           {
             label: this.$t('navbar.网站APP小程序SDK合规评估'),
             value: 4,
             icon: 'icon-code',
-            href: '',
+            href: 'http://console.idatatrust.com/#/wel/index',
+            // href: 'http://116.205.172.167:38888/#/wel/index',
           },
           {
             label: this.$t('navbar.自动化数据发现'),
             value: 5,
             icon: 'icon-compass',
-            href: '',
+            href: 'http://console.idatatrust.com/#/wel/index',
+            // href: 'http://116.205.172.167:38888/#/wel/index',
           },
           {
-            label: this.$t('navbar.数据处理活动记录RoPA'),
+            label: this.$t('navbar.数据处理活动流图'),
             value: 6,
             icon: 'icon-category',
-            // href: `http://assets.idatatrust.com/#/assetsCharts/assetbusin/index`,
-            href: `http://116.205.172.167:38082/#/assetsCharts/assetbusin/index`,
+            href: `http://assets.idatatrust.com/#/assetsCharts/assetbusin/index`,
+            // href: `http://116.205.172.167:38082/#/assetsCharts/assetbusin/index`,
           },
         ],
         exportTemplateDialog: false,
@@ -282,6 +291,22 @@
       ])
     },
     methods: {
+      // 导出使用手册
+      openUserManual() {
+        this.$confirm(this.$t('crudCommon.是否导出本条数据'), this.$t('crudCommon.提示'), {
+            confirmButtonText: this.$t('crudCommon.是'),
+            cancelButtonText: this.$t('crudCommon.否'),
+            type: "warning",
+          })
+          .then(() => {
+            this.fullscreenLoading = true
+            this.downBlobFile('/admin/instructionManual/export', {}, '使用手册').then(() => {
+              this.fullscreenLoading = false
+
+            })
+          })
+      },
+
       // 打开导出pdf弹窗
       openExportPDF() {
         this.exportTemplateDialog = true
@@ -309,22 +334,22 @@
               id: 1,
               label: '评估及风险治理',
               path: '/assessment',
-              // moduleHost: 'http://assess.idatatrust.com'
-              moduleHost: 'http://116.205.172.167:38080'
+              moduleHost: 'http://assess.idatatrust.com'
+              // moduleHost: 'http://116.205.172.167:38080'
           },
           {
               id: 2,
               label: '数据发现及映射',
               path: '/assets',
-              // moduleHost: 'http://assets.idatatrust.com'
-              moduleHost: 'http://116.205.172.167:38082'
+              moduleHost: 'http://assets.idatatrust.com'
+              // moduleHost: 'http://116.205.172.167:38082'
           },
           {
               id: 3,
               label: '告知同意及主体权利',
               path: '/inform',
-              // moduleHost: 'http://power.idatatrust.com'
-              moduleHost: 'http://116.205.172.167:38083'
+              moduleHost: 'http://power.idatatrust.com'
+              // moduleHost: 'http://116.205.172.167:38083'
           },
         ]
         .map(item => {

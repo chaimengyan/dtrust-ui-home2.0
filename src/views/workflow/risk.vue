@@ -138,7 +138,7 @@ export default {
   methods: {
 
     toAssessment(val) {
-      const assUrl = `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?infoId=${this.evaluationId}&level=${val.level}`;
+      const assUrl = `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?infoId=${this.evaluationId}&level=${val.level}`;
       window.open(assUrl, "_blank");
     },
    

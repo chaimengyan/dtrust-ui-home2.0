@@ -226,7 +226,7 @@ export default {
       this.isIcon = true
     },
     addBtn() {
-      const assUrl = `http://116.205.172.167:38083/#/inform/workflow`;
+      const assUrl = `http://power.idatatrust.com/#/inform/workflow`;
       window.open(assUrl, "_blank");
     },
     // 获取全部告知流

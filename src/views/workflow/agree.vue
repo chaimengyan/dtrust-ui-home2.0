@@ -160,9 +160,12 @@ export default {
     echoContent(flowKey) {
       this.flowKey = flowKey
       console.log(flowKey, '同意flowKey')
-      this.agreeRecordApiUrl = `http://116.205.172.167:38083/workflow/accessRecord`
-      this.addPowerApiUrl = `http://116.205.172.167:38083/workflow/accessResponse`
-      this.allrequestTypeApiUrl = `http://116.205.172.167:38083/workflow/requestType/getRequestTypeListByCode?tenantCode=${this.tenantCode}`
+      // this.agreeRecordApiUrl = `http://116.205.172.167:38083/workflow/accessRecord`
+      this.agreeRecordApiUrl = `http://power.idatatrust.com/workflow/accessRecord`
+      // this.addPowerApiUrl = `http://116.205.172.167:38083/workflow/accessResponse`
+      this.addPowerApiUrl = `http://power.idatatrust.com/workflow/accessResponse`
+      // this.allrequestTypeApiUrl = `http://116.205.172.167:38083/workflow/requestType/getRequestTypeListByCode?tenantCode=${this.tenantCode}`
+      this.allrequestTypeApiUrl = `http://power.idatatrust.com/workflow/requestType/getRequestTypeListByCode?tenantCode=${this.tenantCode}`
     },
   },
 };

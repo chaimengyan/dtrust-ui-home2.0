@@ -254,7 +254,7 @@ export default {
       this.isIcon = true
     },
     addBtn() {
-      const assUrl = `http://116.205.172.167:38082/#/assets/businessScenarioManagement`;
+      const assUrl = `http://assets.idatatrust.com/#/assets/businessScenarioManagement`;
       window.open(assUrl, "_blank");
     },
     // 获取全部业务场景

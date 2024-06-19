@@ -37,8 +37,8 @@
           :props="{ multiple: true }"
           clearable />
       </el-form-item>
-      <el-form-item v-else label="被评估人" prop="evaluators">
-        <el-select v-model="releaseForm.evaluators" placeholder="请选择被评估人" clearable multiple>
+      <el-form-item v-else label="被评估人" prop="userIds">
+        <el-select v-model="releaseForm.userIds" placeholder="请选择被评估人" clearable multiple>
           <el-option v-for="item in userList" :key="item.userId" :label="item.nickName" :value="item.userId" />
         </el-select>
       </el-form-item>
@@ -90,6 +90,7 @@ import {
 } from "@/api/workflow/assessment";
 import LogicEvaluation from "@/views/workflow/components/logicEvaluation";
 import {mapGetters} from "vuex";
+import {dateFormat} from "@/util/date"
 
 export default {
     name: "ReleaseForm",
@@ -132,6 +133,7 @@ export default {
         console.log(this.evaluationItem ,'evaluationItem');
         this.evaluationItem.hasPrefabricate && this.getProphetByQnId(this.evaluationItem.qnId)
         this.initReleaseForm()
+        this.getChapterByQnId()
         // this.getQnList()
         this.getUserList()
     },
@@ -147,7 +149,7 @@ export default {
                 // 审核人
                 auditorIds: [],
                 // 问卷截止时间
-                time: '',
+                time: [],
                 // 被评估人
                 evaluators: [],
                 prefabricates: [],
@@ -155,9 +157,20 @@ export default {
         },
         getProphetByQnId(qnId) {
             getProphetByQnIdApi(qnId).then(res => {
-                const {mode, evaluators, ...other} = res.data.data
+                const {mode, evaluators, validTime, ...other} = res.data.data
                 this.releaseForm = res.data.data
-                this.releaseForm.evaluators = mode === 1 ? evaluators.map(x => x.userId) : evaluators.map(x => [x.chapterId, x.userId])
+
+                const now = new Date();
+                this.releaseForm.time = [dateFormat(new Date()), dateFormat(new Date(now.getTime() + validTime * 60 * 60 * 1000))]
+               
+                if(mode === 1){
+                    this.releaseForm.userIds = evaluators.map(x => x.userId)
+                }else {
+                    this.releaseForm.evaluators = evaluators.map(x => [x.chapterId, x.userId])
+
+                    
+                } 
+                console.log(this.releaseForm, 'this.releaseForm');
             })
         },
         // 获取全部用户
@@ -183,6 +196,7 @@ export default {
         },
         changeMode() {
             this.releaseForm.evaluators = []
+            this.releaseForm.userIds = []
         },
         getChapterByQnId() {
             console.log(this.evaluationItem,'this.evaluationItem');
@@ -196,6 +210,7 @@ export default {
                         children: map,
                     }
                 });
+                console.log(this.options,this.releaseForm.evaluators, "???????");
             })
         },
         logicBtn() {
@@ -207,6 +222,7 @@ export default {
 
         // 确定启动评估
          releaseSave () {
+            
             this.$refs.ruleFormRef.validate((valid, done,msg) => {
                 if (valid) {
                     const { evaluators, time, ...other } = this.releaseForm
@@ -229,7 +245,6 @@ export default {
                         ...other,
                         ...this.evaluationItem,
                     }
-
                      startEvaluationApi(data).then(res => {
                         if(res.data.status == 200) {
                             this.initReleaseForm()

@@ -48,3 +48,13 @@ export function delNotice(id) {
     method: 'delete',
   })
 }
+
+// 导出使用手册
+export function exportUserManual(params) {
+  return request({
+      url: `/admin/instructionManual/export`,
+      method: 'get',
+      params,
+      responseType: 'blob'
+  });
+}

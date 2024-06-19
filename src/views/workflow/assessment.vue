@@ -244,7 +244,7 @@ export default {
       this.isIcon = true
     },
     addBtn() {
-      const assUrl = `http://116.205.172.167:38080/#/assessment/questionnaire/index`;
+      const assUrl = `http://assess.idatatrust.com/#/assessment/questionnaire/index`;
       window.open(assUrl, "_blank");
     },
     // 获取全部问卷

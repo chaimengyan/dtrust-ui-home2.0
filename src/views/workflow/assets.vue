@@ -551,7 +551,7 @@ export default {
       this.isIcon = true
     },
     addBtn() {
-      const assUrl = `http://116.205.172.167:38082/#/assets/assetsManagement`;
+      const assUrl = `http://assets.idatatrust.com/#/assets/assetsManagement`;
       window.open(assUrl, "_blank");
     },
     // 获取业务场景下的资产
