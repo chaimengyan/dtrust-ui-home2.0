@@ -205,15 +205,22 @@
             label: 'DPIA',
             value: 0,
             icon: 'icon-dpia',
-            href: `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?typeIds=${29}`,
+            href: `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?typeIds=${25}`,
             // href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${29}`,
           },
           {
-            label: this.$t('navbar.数据出境风险自评估'),
+            label: this.$t('navbar.出境风险评估'),
             value: 1,
             icon: 'icon-cjfxpg',
-            href: `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?typeIds=${30}`,
+            href: `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?typeIds=${26}`,
             // href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${30}`,
+          },
+          {
+            label:  this.$t('navbar.PIPL'),
+            value: 3,
+            icon: '',
+            href: `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?typeIds=${7}`,
+            // href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${26}`,
           },
           {
             label: this.$t('navbar.数据跨境地图'),
@@ -222,13 +229,7 @@
             href: `http://assets.idatatrust.com/#/assetsCharts/earth/index`,
             // href: `http://116.205.172.167:38082/#/assetsCharts/earth/index`,
           },
-          {
-            label:  this.$t('navbar.PIPL'),
-            value: 3,
-            icon: '',
-            href: `http://assess.idatatrust.com/#/assessment/questionnaireStart/index?typeIds=${26}`,
-            // href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${26}`,
-          },
+          
           {
             label: this.$t('navbar.网站APP小程序SDK合规评估'),
             value: 4,
@@ -299,9 +300,15 @@
             type: "warning",
           })
           .then(() => {
-            this.fullscreenLoading = true
+            // this.fullscreenLoading = true
+            this.$notify({
+              title: '温馨提示',
+              type: 'info',
+              message: '如果数据庞大会导致下载缓慢哦，请您耐心等待！',
+              duration: 3000
+            });
             this.downBlobFile('/admin/instructionManual/export', {}, '使用手册').then(() => {
-              this.fullscreenLoading = false
+              // this.fullscreenLoading = false
 
             })
           })

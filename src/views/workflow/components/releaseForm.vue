@@ -158,7 +158,7 @@ export default {
         getProphetByQnId(qnId) {
             getProphetByQnIdApi(qnId).then(res => {
                 const {mode, evaluators, validTime, ...other} = res.data.data
-                this.releaseForm = res.data.data
+                this.releaseForm = {...this.releaseForm, ...res.data.data}
 
                 const now = new Date();
                 this.releaseForm.time = [dateFormat(new Date()), dateFormat(new Date(now.getTime() + validTime * 60 * 60 * 1000))]
@@ -268,3 +268,6 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+
+</style>

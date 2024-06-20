@@ -46,7 +46,7 @@ export default {
   navbar: {
     工作流: 'Workflow',
     DPIA: 'DPIA',
-    数据出境风险自评估: 'Self-assessment of data exit risk',
+    出境风险评估: 'Outbound risk assessment',
     数据跨境地图: 'Data cross-border map',
     PIPL: 'Individual insurance method gap assessment',
     网站APP小程序SDK合规评估: 'Website/APP/applet/SDK compliance assessment',
