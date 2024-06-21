@@ -122,6 +122,7 @@ export default {
     资产管理: 'Asset management',
     业务场景管理: 'Business scenario management',
     属性管理: 'Attribute management',
+    资产字段审核: 'Asset field review',
     数据处理活动: 'Data processing activities',
     数据地图: 'Data map',
     数据主体映射图: 'Data Subject Mapping Map',

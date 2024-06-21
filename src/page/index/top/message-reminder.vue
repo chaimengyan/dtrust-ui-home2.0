@@ -55,6 +55,7 @@ export default {
             pageSize: 20,
             noticeList: [],
             isRead: true,
+            timer: null,
         }
     },
     computed: {
@@ -68,13 +69,17 @@ export default {
         this.openMessage()
     },
     mounted() {
+        console.log('创建了');
+
         document.addEventListener("visibilitychange", this.openMessage);
-        setInterval(() => {
+        this.timer = setInterval(() => {
             this.openMessage()
         }, 10000);
     },
     beforeDestroy() {
-      document.removeEventListener("visibilitychange", this.openMessage);
+        console.log('销毁了');
+        clearInterval(this.timer)
+        document.removeEventListener("visibilitychange", this.openMessage);
     },
     methods: {
         openMessage() {
