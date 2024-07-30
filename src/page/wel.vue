@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <!-- <el-tabs v-model="activeName" @tab-click="handleClick" >
+  <div style="padding:20px;">
+    <el-tabs v-model="activeName" @tab-click="handleClick" >
       <el-tab-pane label="模块入口" name="moduleEntry">
         <ModuleEntry
         />
@@ -16,10 +16,10 @@
           ref="workflow"
         />
       </el-tab-pane>
-    </el-tabs> -->
-    <Workflow
+    </el-tabs>
+    <!-- <Workflow
           ref="workflow"
-        />
+        /> -->
   </div>
 </template>
 
@@ -37,7 +37,7 @@
     },
     data() {
       return {
-        activeName: 'workflow',
+        activeName: 'moduleEntry',
       }
     },
     created() {

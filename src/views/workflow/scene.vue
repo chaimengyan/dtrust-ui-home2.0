@@ -97,10 +97,10 @@
                       <i :class="isFullscreen ? 'el-icon-news' : 'el-icon-full-screen'" />
                   </div>
               </div>
-              <avue-form :option="option" v-model="sceneForm">
+              <avue-form ref="sceneForm" :option="option" v-model="sceneForm" @submit="submit">
               </avue-form>
               <div v-if="!option.detail" slot="footer" class="dialog-footer">
-                  <el-button icon="el-icon-circle-check" type="primary" @click="submit">{{$t('assets.修改')}}</el-button>
+                  <el-button icon="el-icon-circle-check" type="primary" @click="submit('sceneForm')">{{$t('assets.修改')}}</el-button>
                   <el-button icon="el-icon-circle-close" @click="cancel">{{$t('assets.取消')}}</el-button>
               </div>
             </el-dialog>
@@ -144,7 +144,8 @@ import {
   } from "@/api/workflow/assets";
 import {tableOption} from "@/const/crud/workflow/scene"
 import { mapGetters } from "vuex";
- 
+import { isDev, isTest } from '@/util/env'
+
 const defaultDrag = { sceneName: i18n.t('assessment.将图标拖拽至此处'), sceneId: -2 }
 
 export default {
@@ -222,7 +223,7 @@ export default {
       this.$emit('getSceneId', -2, 0)
 
     },
-    submit() {
+    submit(formName) {
       // if(Array.isArray(this.sceneForm.purposeOfProcessing) || typeof this.sceneForm.purposeOfProcessing === 'object') {
       //   this.sceneForm.purposeOfProcessing = this.sceneForm.purposeOfProcessing.join()
       // }
@@ -232,29 +233,38 @@ export default {
       // if(Array.isArray(this.sceneForm.dataSubjectsRegion)) {
       //   this.sceneForm.dataSubjectsRegion = this.sceneForm.dataSubjectsRegion.join()
       // }
-      let formReduce = {}
-      for(let key in this.sceneForm) {
-        if(Array.isArray(this.sceneForm[key])) {
-          this.sceneForm[key] = this.sceneForm[key].join()
+      this.$refs[formName].validate((valid, done) => {
+        if (valid) {
+          let formReduce = {}
+          for(let key in this.sceneForm) {
+            if(Array.isArray(this.sceneForm[key])) {
+              this.sceneForm[key] = this.sceneForm[key].join()
+            }
+            if(key.substr(0, 1) !== '$') {
+              formReduce[key] = this.sceneForm[key]
+            }
+          }
+          updateScene(formReduce).then(res => {
+            this.isIcon = true
+            // this.mainList = [defaultDrag, form]
+            this.mainList = [this.sceneForm]
+            this.getAllAssetsBusinessScene();
+            this.$message.success(res.data.message)
+            done();
+          }).catch(() => {
+              done();
+          })
+        } else {
+          return false
         }
-        if(key.substr(0, 1) !== '$') {
-          formReduce[key] = this.sceneForm[key]
-        }
-      }
-      updateScene(formReduce).then(res => {
-        this.isIcon = true
-        // this.mainList = [defaultDrag, form]
-        this.mainList = [this.sceneForm]
-        this.getAllAssetsBusinessScene();
-        this.$message.success(res.data.message)
-      }).catch(() => {
       })
     },
     cancel() {
       this.isIcon = true
     },
     addBtn() {
-      const assUrl = `http://assets.idatatrust.com/#/assets/businessScenarioManagement`;
+      const assetsUrl = !isDev() ? !isTest() ? `https://assets.idatatrust.com` : 'http://116.205.172.167:38082' : `http://${window.location.hostname}:38082` 
+      const assUrl = `${assetsUrl}/#/assets/businessScenarioManagement`;
       window.open(assUrl, "_blank");
     },
     // 获取全部业务场景
@@ -315,9 +325,9 @@ export default {
     font-size: 16px;
   }
 
-  .scene-main-content .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
-    margin-bottom: 5px;
-  }
+  // .scene-main-content .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
+  //   margin-bottom: 5px;
+  // }
 
   .scene-main-content .el-collapse-item__wrap {
     background-color: transparent;

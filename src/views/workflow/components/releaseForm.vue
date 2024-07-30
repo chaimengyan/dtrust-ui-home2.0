@@ -133,7 +133,7 @@ export default {
         console.log(this.evaluationItem ,'evaluationItem');
         this.evaluationItem.hasPrefabricate && this.getProphetByQnId(this.evaluationItem.qnId)
         this.initReleaseForm()
-        this.getChapterByQnId()
+        
         // this.getQnList()
         this.getUserList()
     },
@@ -177,6 +177,7 @@ export default {
         getUserList() {
             getUserList().then(res => {
                 this.userList = res.data.data
+                this.getChapterByQnId()
             })
         },
         // 下拉获取问卷名称列表

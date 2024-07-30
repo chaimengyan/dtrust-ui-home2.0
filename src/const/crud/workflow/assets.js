@@ -1,5 +1,7 @@
 
 import iconList from "@/const/iconList";
+import city from "@/const/json/city"
+
 import {
   getDeptTreeByTenantId
 } from "@/api/workflow/assets";
@@ -26,12 +28,28 @@ option.column.forEach((item, index) => {
   if(item.type === 'icon') {
     item.iconList = iconList
   }
-  else if(item.prop === 'managingOrganization') {
+  if(item.prop === 'managingOrganization') {
     item.props = {
       label:'name',
       value:'id'
     }
     getSelectOption(item, tenantId);
+  }
+  if(item.type === 'cascader') {
+    item.props = {
+      label: 'name_cn',
+      value: 'name_cn',
+      children: 'cities',
+    }
+    item.dicData = city
+  }
+  if(item.type === 'addressSelect') {
+    item.props = {
+      label: 'name_cn',
+      value: 'name_cn',
+    }
+    item.dicData = city
+    item.type = 'select'
   }
 });
 _this.option = option

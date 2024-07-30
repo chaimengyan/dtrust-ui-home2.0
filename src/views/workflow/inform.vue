@@ -134,6 +134,7 @@ import {
   } from "@/api/workflow/inform";
 import {tableOption} from "@/const/crud/workflow/inform"
 import { mapGetters } from "vuex";
+import { isDev, isTest } from '@/util/env'
  
 const defaultDrag = { informFlowName: i18n.t('assessment.将图标拖拽至此处'), id: -2 }
 
@@ -226,7 +227,8 @@ export default {
       this.isIcon = true
     },
     addBtn() {
-      const assUrl = `http://power.idatatrust.com/#/inform/workflow`;
+      const powerUrl = !isDev() ? !isTest() ? `https://power.idatatrust.com` : 'http://116.205.172.167:38083' : `http://${window.location.hostname}:38083` 
+      const assUrl = `${powerUrl}/#/inform/workflow`;
       window.open(assUrl, "_blank");
     },
     // 获取全部告知流

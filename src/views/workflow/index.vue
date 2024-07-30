@@ -415,9 +415,12 @@
                   }else if(this.workflowObj.steps == 6) {
                     this.disabledObj[5] = false
                     this.disabledObj[6] = false
+                  }else if(this.workflowObj.steps == 3) {
+                    this.disabledObj[3] = true
                   }else {
                     this.disabledObj[k] = false
                     this.disabledObj[k*1+1] = false
+                    console.log(this.disabledObj[k], '??????>>><<<<<');
                   }
                 }
               }

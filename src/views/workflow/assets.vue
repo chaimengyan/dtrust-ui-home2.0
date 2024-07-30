@@ -87,7 +87,7 @@
           <div class="sceneForm" v-else>
             <el-dialog 
               :visible="true" 
-              width="35%" 
+              width="70%" 
               :close-on-click-modal='false' 
               @close="cancel"
               :fullscreen="isFullscreen">
@@ -97,14 +97,14 @@
                       <i :class="isFullscreen ? 'el-icon-news' : 'el-icon-full-screen'" />
                   </div>
               </div>
-              <avue-form :option="option" v-model="projectForm">
+              <avue-form :option="option" ref="assetsForm" v-model="projectForm" @submit="submit">
                 <!-- 经纬度 -->
                 <template slot="hostingLocation">
                   <avue-input v-model="projectForm.hostingLocation" @focus="openMap" :placeholder="`${$t('crudCommon.请选择')}${$t('assets.托管位置')}`"  />
                 </template>
               </avue-form>
               <div v-if="!option.detail" slot="footer" class="dialog-footer">
-                  <el-button type="primary" icon="el-icon-circle-check" @click="submit">{{$t('assets.修改')}}</el-button>
+                  <el-button type="primary" icon="el-icon-circle-check" @click="submit('assetsForm')">{{$t('assets.修改')}}</el-button>
                   <el-button icon="el-icon-circle-close" @click="cancel">{{$t('assets.取消')}}</el-button>
               </div>
             </el-dialog>
@@ -284,6 +284,7 @@ import {
   } from "@/api/workflow/assets";
 import {tableOption} from "@/const/crud/workflow/assets"
 import { mapGetters } from "vuex";
+import { isDev, isTest } from '@/util/env'
 
 const defaultDrag = { projectName: i18n.t('assessment.将图标拖拽至此处'), projectId: -2 }
 
@@ -487,15 +488,18 @@ export default {
         const cityCtrl = new BMapGL.CityListControl();  // 添加城市列表控件
         this.map.addControl(cityCtrl);
         this.map.enableScrollWheelZoom(true) // 滚轮放大缩小地图
-        const point = new BMapGL.Point(this.projectForm.lng||116.404, this.projectForm.lat||39.915);
+        this.projectForm.lng = this.projectForm.lng ? this.projectForm.lng : '116.404'
+        this.projectForm.lat = this.projectForm.lat ? this.projectForm.lat : '39.915'
+        this.projectForm.hostingLocation = this.projectForm.hostingLocation ? this.projectForm.hostingLocation : '北京市'
+        const point = new BMapGL.Point(this.projectForm.lng, this.projectForm.lat);
         
         this.map.centerAndZoom(point, 15); 
         const marker = new BMapGL.Marker(point);  // 创建标注
         this.map.addOverlay(marker); // 将标注添加到地图中
         const geoc = new BMapGL.Geocoder();
         this.map.addEventListener('click', (e) => {
-          this.projectForm.lng = e.latlng.lng
-          this.projectForm.lat = e.latlng.lat
+          this.projectForm.lng = e.latlng.lng.toString()
+          this.projectForm.lat = e.latlng.lat.toString()
           //创建标注位置
           const pt = new BMapGL.Point(e.latlng.lng, e.latlng.lat);
           const marker = new BMapGL.Marker(pt);  // 创建标注
@@ -525,33 +529,43 @@ export default {
       this.mainList = [defaultDrag]
       this.$emit('changeDisabled', false, -2, previousStep(this.stepsListKind, this.flowType, 2))
     },
-    submit() {
-      if(Array.isArray(this.projectForm.organizationalSecurityMeasures) || typeof this.projectForm.organizationalSecurityMeasures === 'object') {
-        this.projectForm.organizationalSecurityMeasures = this.projectForm.organizationalSecurityMeasures.join()
-      }
-      this.projectForm.sceneIds = []
-      let formReduce = {}
-      for(let key in this.projectForm) {
-        if(Array.isArray(this.projectForm[key])) {
-          this.projectForm[key] = this.projectForm[key].join()
+    submit(formName) {
+      this.$refs[formName].validate((valid, done) => {
+        if (valid) {
+          if(Array.isArray(this.projectForm.organizationalSecurityMeasures) || typeof this.projectForm.organizationalSecurityMeasures === 'object') {
+            this.projectForm.organizationalSecurityMeasures = this.projectForm.organizationalSecurityMeasures.join()
+          }
+          // this.projectForm.sceneIds = []
+          let formReduce = {}
+          for(let key in this.projectForm) {
+            if(Array.isArray(this.projectForm[key])) {
+              this.projectForm[key] = this.projectForm[key].join()
+            }
+            if(key.substr(0, 1) !== '$') {
+              formReduce[key] = this.projectForm[key]
+            }
+          }
+          updateAsset(formReduce).then(res => {
+            this.isIcon = true
+            // this.mainList = [defaultDrag, form]
+            this.mainList = [this.projectForm]
+            this.getProjectAttributesBySceneId(this.sceneId);
+            this.$message.success(res.data.message)
+            done();
+          }).catch(() => {
+              done();
+          })
+        } else {
+          return false
         }
-        if(key.substr(0, 1) !== '$') {
-          formReduce[key] = this.projectForm[key]
-        }
-      }
-      updateAsset(formReduce).then(res => {
-        this.isIcon = true
-        // this.mainList = [defaultDrag, form]
-        this.mainList = [this.projectForm]
-        this.getProjectAttributesBySceneId(this.sceneId);
-        this.$message.success(res.data.message)
       })
     },
     cancel() {
       this.isIcon = true
     },
     addBtn() {
-      const assUrl = `http://assets.idatatrust.com/#/assets/assetsManagement`;
+      const assetsUrl = !isDev() ? !isTest() ? `https://assets.idatatrust.com` : 'http://116.205.172.167:38082' : `http://${window.location.hostname}:38082`
+      const assUrl = `${assetsUrl}/#/assets/assetsManagement`;
       window.open(assUrl, "_blank");
     },
     // 获取业务场景下的资产

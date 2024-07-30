@@ -28,7 +28,7 @@ export const tableOption = (_this, tenantId, option) => {
       item.iconList = iconList
     }
 
-    if(['dataSubjectsRegion','locationsOfPartiesAccessUse','countriesUtilizingProcess'].includes(item.prop)) {
+    if(item.type === 'cascader'||['dataSubjectsRegion','locationsOfPartiesAccessUse','countriesUtilizingProcess'].includes(item.prop)) {
       item.props = {
         label: 'name_cn',
         value: 'name_cn',
@@ -36,7 +36,14 @@ export const tableOption = (_this, tenantId, option) => {
       }
       item.dicData = city
     }
-
+    if(item.type === 'addressSelect') {
+      item.props = {
+        label: 'name_cn',
+        value: 'name_cn',
+      }
+      item.dicData = city
+      item.type = 'select'
+    }
   });
 
 

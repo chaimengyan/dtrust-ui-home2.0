@@ -7,6 +7,8 @@
 
 <script>
   import {loginByDingDing} from '@/api/login'
+  import { isDev, isTest } from '@/util/env'
+
   export default {
     name: "thirdlogin",
     props: {
@@ -31,7 +33,7 @@
 // console.log(res,'ressssss......');
 //                 })
         // const locationUrl = `${window.location.protocol}//${window.location.hostname}:/#/`
-        const locationUrl = `http://console.idatatrust.com/#/`
+        const locationUrl = !isDev() ? !isTest() ? `https://console.idatatrust.com/#/` : 'http://116.205.172.167:38888/#/' : `http://${window.location.hostname}:38888/#/`
 
         // STEP3：在需要的时候，调用 window.DTFrameLogin 方法构造登录二维码，并处理登录成功或失败的回调。
         window.DTFrameLogin(
