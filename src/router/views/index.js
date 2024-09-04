@@ -19,4 +19,14 @@ export default [{
         component: () =>
             import ( /* webpackChunkName: "page" */ '@/views/admin/user/info'),
     }]
+}, {
+    path: '/workflow',
+    component: Layout,
+    redirect: '/workflow/index',
+    children: [{
+        path: 'index',
+        name: '工作流',
+        component: () =>
+            import ( /* webpackChunkName: "page" */ '@/views/workflow/index'),
+    }]
 }]

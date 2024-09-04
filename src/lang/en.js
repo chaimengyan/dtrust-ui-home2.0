@@ -61,7 +61,7 @@ export default {
     全部数据: 'All data',
     子公司数据: 'Subsidiary data',
     组织架构: 'Organization structure',
-
+    进入模块: 'Enter the module'
   },
   tagsView: {
     更多: 'more',

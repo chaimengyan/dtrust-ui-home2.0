@@ -1,10 +1,10 @@
 <template>
-  <div style="padding:20px;">
-    <el-tabs v-model="activeName" @tab-click="handleClick" >
-      <el-tab-pane label="模块入口" name="moduleEntry">
+  <div >
+    <!-- <el-tabs v-model="activeName" @tab-click="handleClick" >
+      <el-tab-pane label="模块入口" name="moduleEntry"> -->
         <ModuleEntry
         />
-      </el-tab-pane>
+      <!-- </el-tab-pane>
       <el-tab-pane label="工作流列表" name="reportForm">
         <WorkflowCrud
           ref="workflowCrud"
@@ -16,7 +16,7 @@
           ref="workflow"
         />
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs> -->
     <!-- <Workflow
           ref="workflow"
         /> -->
