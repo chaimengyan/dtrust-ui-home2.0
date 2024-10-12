@@ -74,10 +74,12 @@ import { mapGetters } from "vuex";
               describe: '用于账号、角色、菜单、组织架构等的管理'
             },
           ]
-          console.log(this.menu,'this.menu');
-          if(this.menu.find(x => x.path.slice(0, 6) === '/admin') === undefined) {
-            this.moduleList = this.moduleList.filter(y => y.icon !== 'el-icon-s-tools')
-          }
+          this.$store.dispatch("GetMenu", { type: true, id: -1 }).then(data => {
+            if(this.menu.find(x => x.path.slice(0, 6) === '/admin') === undefined) {
+              this.moduleList = this.moduleList.filter(y => y.icon !== 'el-icon-s-tools')
+            }
+          });
+          
         },
        
         methods: {

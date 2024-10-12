@@ -120,7 +120,7 @@ export default {
     字段主数据: 'Field master data',
     数据发现及映射: 'Data discovery and mapping',
     资产管理: 'Asset management',
-    业务场景管理: 'Business scenario management',
+    业务活动管理: 'Business Activity Management',
     属性管理: 'Attribute management',
     资产字段审核: 'Asset field review',
     数据处理活动: 'Data processing activities',
