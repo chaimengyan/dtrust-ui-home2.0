@@ -72,9 +72,9 @@ export default {
         console.log('创建了');
 
         document.addEventListener("visibilitychange", this.openMessage);
-        this.timer = setInterval(() => {
-            this.openMessage()
-        }, 10000);
+        // this.timer = setInterval(() => {
+        //     this.openMessage()
+        // }, 10000);
     },
     beforeDestroy() {
         console.log('销毁了');

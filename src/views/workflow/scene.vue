@@ -1,7 +1,7 @@
 <template>
   <div class="scene">
     <div class="scene-head">
-      <span class="title">{{$t('scene.业务场景')}}</span>
+      <span class="title">{{$t('scene.业务活动')}}</span>
     </div>
     <div class="scene-body" :class="activeClass">
       <div class="scene-left common-box">
@@ -78,7 +78,7 @@
                   </el-tooltip>
                   <div style="padding-bottom: 2px;color: #999;">|</div>
                   <el-tooltip :content="$t('crudCommon.删除')" placement="bottom" effect="light">
-                    <el-link icon="el-icon-delete" :underline="false" :disabled="disabled" @click="delBtn(item)" />
+                    <el-link :style="disabled?'': 'color: red;'" icon="el-icon-delete" :underline="false" :disabled="disabled" @click="delBtn(item)" />
                   </el-tooltip>
                 </div>
               </div>
@@ -92,7 +92,7 @@
               @close="cancel"
               :fullscreen="isFullscreen">
               <div class="dialog-header" slot="title">
-                  <span class="dialog-header-title">{{$t('scene.业务场景')}}</span>
+                  <span class="dialog-header-title">{{$t('scene.业务活动')}}</span>
                   <div class="dialog-header-screen" @click="() => isFullscreen = !isFullscreen">
                       <i :class="isFullscreen ? 'el-icon-news' : 'el-icon-full-screen'" />
                   </div>

@@ -78,7 +78,7 @@
                   </el-tooltip>
                   <div style="padding-bottom: 2px;color: #999;">|</div>
                   <el-tooltip :content="$t('crudCommon.删除')" placement="bottom" effect="light">
-                    <el-link icon="el-icon-delete" :underline="false" :disabled="disabled" @click="delBtn(item)" />
+                    <el-link :style="disabled?'': 'color: red;'" icon="el-icon-delete" :underline="false" :disabled="disabled" @click="delBtn(item)" />
                   </el-tooltip>
                 </div>
               </div>
@@ -128,7 +128,7 @@ import { deepClone } from "@/util/util";
 import { previousStep } from "@/util/workflow";
 import { stepsListKind } from "@/util/enum"
 import { 
-  getInformFlowList,
+  getSimpleListForFlow,
   cloneInformFlow,
   editInformFlow
   } from "@/api/workflow/inform";
@@ -195,7 +195,7 @@ export default {
     }
   },
   created() {
-    this.getInformFlowList();
+    this.getSimpleListForFlow();
     this.option = tableOption(this)
   },
   methods: {
@@ -217,7 +217,7 @@ export default {
         // this.mainList = [defaultDrag, form]
 
         this.mainList = [this.sceneForm]
-        this.getInformFlowList();
+        this.getSimpleListForFlow();
         done()
       }).catch(() => {
         done()
@@ -232,8 +232,8 @@ export default {
       window.open(assUrl, "_blank");
     },
     // 获取全部告知流
-    getInformFlowList() {
-      return getInformFlowList().then((res) => {
+    getSimpleListForFlow() {
+      return getSimpleListForFlow().then((res) => {
         this.leftList = res.data.data;
       });
     },
@@ -248,7 +248,7 @@ export default {
         return
       } 
 
-      await this.getInformFlowList()
+      await this.getSimpleListForFlow()
       
       const item = this.leftList.find((m) => m.id == informFlowId);
       if (item) {

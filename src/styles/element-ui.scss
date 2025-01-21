@@ -217,3 +217,7 @@
 .el-cascader {
   display: flex;
 }
+// 解决时间选择器超出表单
+.el-range-editor--small.el-input__inner {
+  width: 100%;
+}

@@ -29,7 +29,7 @@
                   </el-button>
                   <el-button
                     v-if="permissions.assets_dataProcessingActivities_batchDel"
-                    type="primary"
+                    type="danger"
                     plain
                     icon="el-icon-delete"
                     @click="delBtn(false)"
@@ -54,6 +54,7 @@
                             :disabled="!handleDataPermissions('delete', scope.row)"
                             type="text"
                             size="small"
+                            :style="!handleDataPermissions('delete', scope.row)?'': 'color: red;'"
                             icon="el-icon-delete"
                             @click="delBtn(scope.row,scope.index)"
                             />
@@ -139,10 +140,10 @@
                 <el-select v-if="[0,1,2,3].includes(templateType)" v-model="estimateId" :placeholder="`${$t('crudCommon.请选择')}${$t('exportTemplate.评估')}`" clearable>
                     <el-option v-for="item in estimateOptions" :key="item.id" :label="item.name" :value="item.id" />
                 </el-select>
-                <el-select v-if="templateType === 4" v-model="assetsId" :placeholder="`${$t('crudCommon.请选择')}${$t('responseWorkflow.资产')}`" clearable>
+                <el-select v-if="templateType === 4" v-model="assetsId" :placeholder="`${$t('crudCommon.请选择')}${$t('assets.资产')}`" clearable>
                     <el-option v-for="item in assetsOptions" :key="item.projectId" :label="item.projectName" :value="item.projectId" />
                 </el-select>
-                <el-select v-if="templateType === 5" v-model="sceneId" :placeholder="`${$t('crudCommon.请选择')}${$t('defineInteractionPoints.业务场景')}`" clearable>
+                <el-select v-if="templateType === 5" v-model="sceneId" :placeholder="`${$t('crudCommon.请选择')}${$t('scene.业务活动')}`" clearable>
                     <el-option v-for="item in sceneOptions" :key="item.sceneId" :label="item.sceneName" :value="item.sceneId" />
                 </el-select>
             </div>
@@ -162,6 +163,8 @@
             getEvaluationListApi,
             getRecordsApi
         } from '@/api/exportTemplate/index'
+    import {  getAllAssetsBusinessScene } from "@/api/workflow/scene";
+    import { getAllAssetsProject} from "@/api/workflow/assets";
     import {exportRecordOption, tableOption} from '@/const/crud/exportTemplate/index'
     import temForm from '@/views/exportTemplate/tem-form.vue'
     import {mapGetters} from 'vuex'
@@ -348,12 +351,12 @@
             })
         },
         getAllAssetsProject() {
-            getAllAssetsProjectApi().then(res => {
+            getAllAssetsProject().then(res => {
                 this.assetsOptions = res.data.data
             })
         },
         getAllAssetsBusinessScene() {
-            getAllAssetsBusinessSceneApi().then(res => {
+            getAllAssetsBusinessScene().then(res => {
                 this.sceneOptions = res.data.data
             })
         },

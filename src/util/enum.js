@@ -19,7 +19,7 @@ export const flowTypeOptions = [
         value: 3
     },
     {
-        label: i18n.t('enum.业务场景评估'),
+        label: i18n.t('enum.业务活动评估'),
         value: 4
     },
 ]
@@ -50,7 +50,7 @@ export const stepsList = [
         value: 0
     },
     {
-        label: i18n.t('enum.指定业务场景'),
+        label: i18n.t('enum.指定业务活动'),
         value: 1
     },
     {
@@ -125,7 +125,7 @@ export const stepsListKind = {
               label: i18n.t('enum.启动工作流'),
               value: 0
             }, {
-              label: i18n.t('enum.指定业务场景'),
+              label: i18n.t('enum.指定业务活动'),
               value: 1
             }, {
               label: i18n.t('enum.指定资产'),
@@ -170,7 +170,7 @@ export const stepsListKind = {
               label: i18n.t('enum.启动工作流'),
               value: 0
             }, {
-              label: i18n.t('enum.指定业务场景'),
+              label: i18n.t('enum.指定业务活动'),
               value: 1
             }, {
               label: i18n.t('enum.指定资产'),
@@ -186,7 +186,7 @@ export const stepsListKind = {
               label: i18n.t('enum.启动工作流'),
               value: 0
             }, {
-              label: i18n.t('enum.指定业务场景'),
+              label: i18n.t('enum.指定业务活动'),
               value: 1
             }, {
               label: i18n.t('enum.启动评估'),
@@ -199,9 +199,9 @@ export const stepsListKind = {
 
 //工作流步骤配置
 export const workFlowStepsOption = {
-  0: [i18n.t('scene.业务场景'), i18n.t('assets.资产管理'), i18n.t('assessment.评估模板'), i18n.t('risk.风险分析处理'), i18n.t('inform.告知管理'), i18n.t('agree.同意管理和个人主体权利')],
+  0: [i18n.t('scene.业务活动'), i18n.t('assets.资产管理'), i18n.t('assessment.评估模板'), i18n.t('risk.风险分析处理'), i18n.t('inform.告知管理'), i18n.t('agree.同意管理和个人主体权利')],
   1: [i18n.t('assets.资产管理'), i18n.t('assessment.评估模板'), i18n.t('risk.风险分析处理')],
   2: [i18n.t('assessment.评估模板'), i18n.t('risk.风险分析处理')],
-  3: [i18n.t('scene.业务场景'), i18n.t('assets.资产管理'), i18n.t('inform.告知管理'), i18n.t('agree.同意管理和个人主体权利')],
-  4: [i18n.t('scene.业务场景'), i18n.t('assessment.评估模板'), i18n.t('risk.风险分析处理')]
+  3: [i18n.t('scene.业务活动'), i18n.t('assets.资产管理'), i18n.t('inform.告知管理'), i18n.t('agree.同意管理和个人主体权利')],
+  4: [i18n.t('scene.业务活动'), i18n.t('assessment.评估模板'), i18n.t('risk.风险分析处理')]
 };

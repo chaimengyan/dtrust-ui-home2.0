@@ -28,7 +28,7 @@
                       </el-col>
 
                       <el-col :span="24">
-                        <el-select v-model="searchForm.businessScenarioId" :placeholder="`${$t('crudCommon.请选择')}${$t('scene.业务场景')}`" size="mini" clearable filterable
+                        <el-select v-model="searchForm.businessScenarioId" :placeholder="`${$t('crudCommon.请选择')}${$t('scene.业务活动')}`" size="mini" clearable filterable
                           style="width: 100%;" >
                           <el-option
                             v-for="item in sceneOptions"

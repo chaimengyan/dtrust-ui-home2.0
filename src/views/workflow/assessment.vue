@@ -78,7 +78,7 @@
                   </el-tooltip>
                   <div style="padding-bottom: 2px;color: #999;">|</div>
                   <el-tooltip :content="$t('crudCommon.删除')" placement="bottom" effect="light">
-                    <el-link icon="el-icon-delete" :underline="false" :disabled="disabled" @click="delBtn(item)" />
+                    <el-link :style="disabled?'': 'color: red;'" icon="el-icon-delete" :underline="false" :disabled="disabled" @click="delBtn(item)" />
                   </el-tooltip>
                 </div>
               </div>

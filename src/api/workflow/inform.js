@@ -1,10 +1,19 @@
 import request from '@/router/axios'
 
 // 获取最近的工作流
-export function getInformFlowList() {
+// export function getInformFlowList() {
+//     return request({
+//         url: `/workflow/informFlow/getInformFlowList`,
+//         method: 'get',
+//     })
+// }
+
+// 查询政策条款列表（工作流专用）
+export function getSimpleListForFlow(query) {
     return request({
-        url: `/workflow/informFlow/getInformFlowList`,
+        url: `/workflow/policyClause/simpleListForFlow`,
         method: 'get',
+        params: query
     })
 }
 

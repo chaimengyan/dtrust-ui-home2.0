@@ -58,3 +58,11 @@ export function exportUserManual(params) {
       responseType: 'blob'
   });
 }
+
+// 修改系统语言AR,EN,ES,FR,JA,KO,PT,RU,ZH_CN,ZH_TW
+export function changeLanguage(language) {
+  return request({
+    url: `/admin/user/language/${language}`,
+    method: 'put',
+  })
+}

@@ -51,6 +51,7 @@
                             v-if="permissions.sys_user_edit"
                             :disabled="!handleDataPermissions('delete', scope.row)"
                             type="text"
+                            :style="!handleDataPermissions('delete', scope.row)?'': 'color: red;'"
                             icon="el-icon-delete"
                             @click="delBtn(scope.row, scope.index)"
                             />
