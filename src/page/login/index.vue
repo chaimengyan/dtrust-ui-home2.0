@@ -255,7 +255,7 @@
         background-color: rgba(255, 255, 255, .1);
 
         .cont-foot {
-          padding: 0.12rem 0.24rem;
+          padding: 0.1rem 0.1rem;
           border-top: 1px solid #fff;
           color: #fff;
           font-size: 12px;

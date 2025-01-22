@@ -420,4 +420,11 @@ export default {
     另指派: 'Assign another task',
     已过期: 'Expired',
   },
+  homePage: {
+    跨模块工作流管理平台第三方工具API接入: 'Cross module workflow management platform, third-party tool API integration',
+    问卷管理PIA及多用途合规评估风险治理: 'Questionnaire management, PIA and multi-purpose compliance assessment, risk governance',
+    个人信息分类分级数据清单发现处理活动记录及数据流图: 'Classification and grading of personal information, discovery of data lists, recording of processing activities, and data flow diagrams',
+    隐私政策管理告知及同意记录数据主体权利响应: 'Privacy policy management, notification and consent records, data subject rights response',
+    用于账号角色菜单组织架构等的管理: 'Used for managing accounts, roles, menus, organizational structures, etc'
+  }
 }

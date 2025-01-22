@@ -253,7 +253,7 @@
                 label: this.$t('navbar.网站APP小程序SDK合规评估'),
                 value: 4,
                 icon: 'icon-code',
-                href: `${this.workFlowUrl}/#/wel/index`,
+                href: `${this.workFlowUrl}/#/workflow/index`,
                 // href: 'http://116.205.172.167:38888/#/wel/index',
             },
             {

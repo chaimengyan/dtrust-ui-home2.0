@@ -187,7 +187,7 @@ const MSGINIT = i18n.t('login.发送验证码'),
 <style lang="scss" scoped>
 .msg-text {
   display: block;
-  width: 60px;
+  // width: 60px;
   font-size: 12px;
   text-align: center;
   cursor: pointer;

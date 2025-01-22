@@ -49,29 +49,29 @@ import { mapGetters } from "vuex";
               icon: 'iconfont icon-ty-fenzu',
               title: this.$t('navbar.工作流'),
               link: this.workFlowUrl,
-              describe: '跨模块工作流管理平台、第三方工具API接入'
+              describe: this.$t('homePage.跨模块工作流管理平台第三方工具API接入')
             },
              {
               icon: 'iconfont icon-zd-shoushugongzuoliang',
               title: this.$t('menu.评估及风险治理'),
               link: this.estimateUrl,
-              describe: '问卷管理、PIA及多用途合规评估、风险治理'
+              describe: this.$t('homePage.问卷管理PIA及多用途合规评估风险治理')
             }, {
               icon: 'iconfont icon-zd-shujuchuli2',
               title: this.$t('menu.数据发现及映射'),
               link: this.assetsUrl,
-              describe: '个人信息分类分级、数据清单发现、处理活动记录及数据流图'
+              describe: this.$t('homePage.个人信息分类分级数据清单发现处理活动记录及数据流图')
             }, {
               icon: 'iconfont icon-zd-yingyongchengxu',
               title: this.$t('menu.告知同意及主体权利'),
               link: this.powerUrl,
-              describe: '隐私政策管理、告知及同意记录、数据主体权利响应'
+              describe: this.$t('homePage.隐私政策管理告知及同意记录数据主体权利响应')
             }, 
             {
               icon: 'el-icon-s-tools',
               title: this.$t('navbar.访问控制'),
               link: this.adminUrl,
-              describe: '用于账号、角色、菜单、组织架构等的管理'
+              describe: this.$t('homePage.用于账号角色菜单组织架构等的管理')
             },
           ]
           this.$store.dispatch("GetMenu", { type: true, id: -1 }).then(data => {
