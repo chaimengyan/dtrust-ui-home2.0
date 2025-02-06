@@ -1,7 +1,7 @@
 <template>
   <div class="scene">
     <div class="scene-head">
-      <span class="title">{{$t('inform.告知管理')}}</span>
+      <span class="title">{{$t('inform.政策条款')}}</span>
     </div>
     <div class="scene-body" :class="activeClass">
       <div class="scene-left common-box">
@@ -92,7 +92,7 @@
               @close="cancel"
               :fullscreen="isFullscreen">
               <div class="dialog-header" slot="title">
-                  <span class="dialog-header-title">{{$t('inform.告知管理')}}</span>
+                  <span class="dialog-header-title">{{$t('inform.政策条款')}}</span>
                   <div class="dialog-header-screen" @click="() => isFullscreen = !isFullscreen">
                       <i :class="isFullscreen ? 'el-icon-news' : 'el-icon-full-screen'" />
                   </div>

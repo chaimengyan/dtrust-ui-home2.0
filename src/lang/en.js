@@ -317,7 +317,7 @@ export default {
     当前步骤: 'Current step',
   },
   inform: {
-    告知管理: 'Inform management',
+    政策条款: 'Policy Terms',
     告知流名称: 'Inform stream name',
   },
   risk: {
