@@ -144,7 +144,8 @@ export default {
     percentage() {
       return (item) => {
         const i = this.stepsListKind[item.flowType].findIndex(x => (x.value === item.steps))
-        const num = (i+1)*100 / this.stepsListKind[item.flowType].length
+        console.log(i, this.stepsListKind[item.flowType].length,'进度');
+        const num = (i+0)*100 / this.stepsListKind[item.flowType].length
         return Math.round(num)
       }
     },

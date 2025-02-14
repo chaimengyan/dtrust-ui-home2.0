@@ -3,19 +3,19 @@
       <!-- <div style="text-align:center;padding: 30px;font-size: 22px;">欢迎来到数之信</div> -->
 
       <div class="moduleList" >
-          <div v-for="(item,index) in moduleList" :key="index">
+          <div class="moduleList-item" v-for="(item,index) in moduleList" :key="index">
             <el-link class="module" :underline="false" target="_blank"  onfocus="this.blur();" :href="item.link">
 
-            <div class="m-icon">
-              <i :class="item.icon" style="font-size: 32px;color: #01aea9;"></i>
-            </div>
-            <div class="m-title">
-              {{item.title}}
-            </div>
-            <div class="m-button">
-                  {{item.describe}}
-            </div>
-          </el-link>
+              <div class="m-icon">
+                <i :class="item.icon" style="font-size: 32px;color: #01aea9;"></i>
+              </div>
+              <div class="m-title">
+                {{item.title}}
+              </div>
+              <div class="m-button">
+                    {{item.describe}}
+              </div>
+            </el-link>
 
           </div>
       </div>
@@ -93,6 +93,9 @@ import { mapGetters } from "vuex";
   justify-content: center;
   flex-wrap: wrap;
   padding-top: 50px;
+  .moduleList-item {
+    
+  }
 }
     .module {
       text-align: center;
@@ -102,6 +105,7 @@ import { mapGetters } from "vuex";
       padding: 20px;
       margin: 20px;
       width: 240px;
+      height: 160px;
       background-color: #fff;
       .m-title {
         font-weight: bold;
