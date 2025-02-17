@@ -3,7 +3,7 @@
     <div class="scene-head">
       <span class="title">{{$t('assessment.评估模板')}}</span>
     </div>
-    <div class="scene-body" :class="activeClass">
+    <div class="scene-body" :data-text="$t('crudCommon.请完成上一步')" :class="activeClass">
       <div class="scene-left common-box">
         <div class="scene-left-content" :class=" disabled ? 'disabled' : ''">
           <draggable
@@ -351,7 +351,7 @@ export default {
       &.disabled {
         &:after {
           position: absolute;
-          content: '请完成上一步';
+          content: attr(data-text);
           font-size: 12px;
           color: #999;
           display: flex;

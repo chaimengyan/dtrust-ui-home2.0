@@ -8,26 +8,26 @@
                     :title="qnList.find(x=> x.id===item.nextQnId).qnName" 
                     :name="item.id">
                     <el-form label-width="100px" label-suffix=" :" ref="ruleFormChildRefs" :model="item" :rules="rules">
-                        <el-form-item label="评估名称" prop="evaluationName">
-                            <el-input v-model="item.evaluationName" placeholder="请填写评估名称" clearable></el-input>
+                        <el-form-item :label="$t('assessment.评估名称')" prop="evaluationName">
+                            <el-input v-model="item.evaluationName" :placeholder="`${$t('crudCommon.请输入')}${$t('assessment.评估名称')}`" clearable></el-input>
                         </el-form-item>
-                        <el-form-item label="指派方式">
+                        <el-form-item :label="$t('assessment.评估指派方式')">
                             <el-switch
                             v-model="item.mode"
                             class="ml-2"
                             inline-prompt
                             style="--el-switch-on-color: #46aee7; --el-switch-off-color: #13ce66"
-                            active-text="按章节"
-                            inactive-text="按问卷"
+                            :active-text="$t('assessment.按章节')"
+                            :inactive-text="$t('assessment.按问卷')"
                             :active-value="2"
                             :inactive-value="1"
                             @change="changeMode(item)"
                             />
                         </el-form-item>
-                        <el-form-item label="问卷有效期" prop="validTime">
-                            <el-input-number v-model="item.validTime" placeholder="请填写问卷有效期(小时)"></el-input-number>小时
+                        <el-form-item :label="$t('assessment.问卷有效期')" prop="validTime">
+                            <el-input-number v-model="item.validTime" :placeholder="`${$t('crudCommon.请输入')}${$t('assessment.问卷有效期')}（${$t('assessment.小时')}）`"></el-input-number>&nbsp;&nbsp;{{$t('assessment.小时')}}
                         </el-form-item>
-                        <el-form-item v-if="item.mode === 2" label="被评估人" prop="evaluators">
+                        <el-form-item v-if="item.mode === 2" :label="$t('assessment.被评估人')" prop="evaluators">
                             <el-cascader 
                             placeholder="请选择被评估人"
                             v-model="item.evaluators"
@@ -36,7 +36,7 @@
                             @visible-change="getChapterByQnId(item.nextQnId)" 
                             clearable />
                         </el-form-item>
-                        <el-form-item v-else label="被评估人" prop="evaluators">
+                        <el-form-item v-else :label="$t('assessment.被评估人')" prop="evaluators">
                             <el-select v-model="item.evaluators" placeholder="请选择被评估人" clearable multiple>
                                 <el-option v-for="item in userList" :key="item.userId" :label="item.nickName" :value="item.userId" />
                             </el-select>
@@ -52,8 +52,8 @@
                                 class="ml-2"
                                 inline-prompt
                                 style="--el-switch-on-color: #46aee7; --el-switch-off-color: #13ce66"
-                                active-text="或签"
-                                inactive-text="并签"
+                                :active-text="$t('assessment.或签')"
+                                :inactive-text="$t('assessment.并签')"
                                 :active-value="0"
                                 :inactive-value="1"
                                 />
@@ -66,8 +66,8 @@
             </el-collapse>
 
             <template #footer>
-                <el-button @click="visible = false">取消</el-button>
-                <el-button type="primary" @click="handleSubmit">确定</el-button>
+                <el-button @click="visible = false">{{$t('crudCommon.取消')}}</el-button>
+                <el-button type="primary" @click="handleSubmit">{{$t('crudCommon.确定')}}</el-button>
             </template>
         </el-dialog>
 
@@ -125,7 +125,7 @@ export default {
             childQnId: '',
             visible: false,
             rules: {
-                evaluationName: [{ required: true, message: "请填写评估名称" }],
+                evaluationName: [{ required: true, message: `${this.$t('crudCommon.请输入')}${this.$t('assessment.评估名称')}` }],
                 auditorIds: [{ required: true, message: "请选择审核人" }],
                 evaluators: [{ required: true, message: "请选择被评估人" }],
             },

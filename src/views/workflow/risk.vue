@@ -3,7 +3,7 @@
     <div class="scene-head">
       <span class="title">{{$t('risk.风险分析处理')}}</span>
     </div>
-    <div class="scene-body" :class="activeClass">
+    <div class="scene-body" :data-text="$t('crudCommon.请完成上一步')" :class="activeClass">
       <!-- <div class="scene-left">
         
       </div> -->
@@ -282,7 +282,7 @@ export default {
       &.disabled {
         &:after {
           position: absolute;
-          content: '请完成上一步';
+          content: attr(data-text);
           font-size: 12px;
           color: #999;
           display: flex;
