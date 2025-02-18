@@ -1,6 +1,7 @@
 
 import iconList from "@/const/iconList";
 import city from "@/const/json/city"
+import { getStore } from '@/util/store'
 
 import {
   getDeptTreeByTenantId
@@ -14,6 +15,7 @@ function getSelectOption(item, tenantId) {
 }
 
 export const tableOption = (_this, tenantId, option) => {
+  const fieldName = getStore({ name: 'language' }) == 'zh-cn' ? 'name_cn' : 'name_en'
 
 const APIurl = '/assets/assetsDict/findByDictType?dictType='
 option.submitBtn = false
@@ -37,16 +39,16 @@ option.column.forEach((item, index) => {
   }
   if(item.type === 'cascader') {
     item.props = {
-      label: 'name_cn',
-      value: 'name_cn',
+      label: fieldName,
+      value: fieldName,
       children: 'cities',
     }
     item.dicData = city
   }
   if(item.type === 'addressSelect') {
     item.props = {
-      label: 'name_cn',
-      value: 'name_cn',
+      label: fieldName,
+      value: fieldName,
     }
     item.dicData = city
     item.type = 'select'

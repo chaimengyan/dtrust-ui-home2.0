@@ -3,6 +3,7 @@ import city from "@/const/json/city"
 import {
   getDeptTreeByTenantId
 } from "@/api/workflow/assets";
+import { getStore } from '@/util/store'
 
 // item.dicUrl 调接口
 function getSelectOption(item, tenantId) {
@@ -11,6 +12,8 @@ function getSelectOption(item, tenantId) {
   })
 }
 export const tableOption = (_this, tenantId, option) => {
+  const fieldName = getStore({ name: 'language' }) == 'zh-cn' ? 'name_cn' : 'name_en'
+
   option.submitBtn = false
   option.emptyBtn = false
   option.column.forEach((item, index) => {
@@ -30,16 +33,16 @@ export const tableOption = (_this, tenantId, option) => {
 
     if(item.type === 'cascader'||['dataSubjectsRegion','locationsOfPartiesAccessUse','countriesUtilizingProcess'].includes(item.prop)) {
       item.props = {
-        label: 'name_cn',
-        value: 'name_cn',
+        label: fieldName,
+        value: fieldName,
         children: 'cities',
       }
       item.dicData = city
     }
     if(item.type === 'addressSelect') {
       item.props = {
-        label: 'name_cn',
-        value: 'name_cn',
+        label: fieldName,
+        value: fieldName,
       }
       item.dicData = city
       item.type = 'select'

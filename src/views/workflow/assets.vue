@@ -134,7 +134,7 @@
       </div>
 
       <div class="scene-right common-box">
-        <div class="scene-right-title">自动化检测、数据发现</div>
+        <div class="scene-right-title">{{this.$t('assets.自动化检测数据发现')}}</div>
         <div class="scene-right-content" :class=" disabled ? 'disabled' : ''">
           <draggable
             v-model="rightList"
