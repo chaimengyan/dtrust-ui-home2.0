@@ -220,7 +220,7 @@ export default {
 
       // 如果审核状态是通过，且工作流类型为全评估，工作流步骤由4切换为5，非全评估类型工作流步骤为4，工作流状态为1完成
       // 加当前工作流步骤和状态判断是为了防止进入死循环
-      if(steps !== 5 && status == 0 && this.assessInfo.status === 3 && this.isPass ) {
+      if((steps < 5) && status == 0 && this.assessInfo.status === 3 && this.isPass ) {
         if(flowType == 0) {
           this.$emit('passRisk', 5)
         }else {

@@ -91,7 +91,7 @@
               :start-placeholder="$t('assessment.开始日期')"
               :end-placeholder="$t('assessment.结束日期')"
               value-format="yyyy-MM-dd HH:mm:ss"
-
+              :picker-options="pickerOptions"
           />
       </el-form-item>
 
@@ -145,6 +145,12 @@ export default {
                 time: [{ required: true, message: `${this.$t('crudCommon.请选择')}${this.$t('assessment.有效时间')}` }],
                 evaluators: [{ required: true, message: `${this.$t('crudCommon.请选择')}${this.$t('assessment.被评估人')}`}],
                 chapterAuditors: [{ required: true, message: `${this.$t('crudCommon.请选择')}${this.$t('assessment.章节审核人')}` }],
+            },
+            pickerOptions: {
+            // 禁用选择今日及其之后的日期
+              disabledDate(time) {
+                return time.getTime() < Date.now() - 8.64e7; // 8.64e7 毫秒数代表一天
+              },
             },
         };
     },
@@ -286,8 +292,6 @@ export default {
                         this.$emit('closeAssessmentDialog', 'error')
 
                     })
-                    done()
-
                 }else {
                     this.$emit('closeAssessmentDialog', 'error')
                     return false

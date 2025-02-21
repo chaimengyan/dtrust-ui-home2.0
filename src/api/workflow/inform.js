@@ -29,8 +29,17 @@ export function cloneInformFlow(query) {
 // 修改告知流
 export function editInformFlow(query) {
     return request({
-        url: `/workflow/informFlow`,
+        url: `/workflow/policyClause/simple`,
         method: 'put',
         data: query
+    })
+}
+
+// 克隆隐私政策
+export function clonePolicyClause(query) {
+    return request({
+        url: `/workflow/policyClause/clonePolicyClause`,
+        method: 'post',
+        params: query
     })
 }

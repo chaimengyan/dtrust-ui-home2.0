@@ -25,7 +25,9 @@
                     class="left-block common-block"
                     :style="{ 'background-color': item.color }"
                   >
-                    <i :class="item.icon"></i>
+                  <div>{{item.icon}}</div>
+
+                    <!-- <i :class="item.icon"></i> -->
                   </div>
                 </el-tooltip>
               </div>
@@ -65,7 +67,9 @@
                     class="main-block common-block"
                     :style="{ 'background-color': item.color }"
                   >
-                    <i :class="item.icon" style="font-size: 32px"></i>
+                  <div style="font-size: 32px">{{item.icon}}</div>
+
+                    <!-- <i :class="item.icon" style="font-size: 32px"></i> -->
                   </div>
                 </el-tooltip>
                 <div class="operation">

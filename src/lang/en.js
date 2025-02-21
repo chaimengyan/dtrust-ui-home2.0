@@ -142,8 +142,7 @@ export default {
     响应时限: 'Response Time Limit',
     请求响应规则: 'Request Response Rules',
     响应清单: 'Response List',
-    政策条款模板: 'Policy Terms Template',
-    政策条款: 'Policy Terms',
+    隐私政策模板: 'Privacy Policy Template',
   },
   crudCommon: {
     序号: 'order number',
@@ -225,7 +224,7 @@ export default {
     复制apiUrl: 'Copy ApiUrl',
     请求方式: 'Request Method:',
     body参数及说明: 'Body Parameter and Description:',
-    告知工作流flowKey: 'Inform Workflow FlowKey',
+    告知工作流informKey: 'Inform Workflow InformKey',
     用户信息: 'User Information',
     同意状态: 'Consent Status',
     新增主体权利: 'New Subject Rights',
@@ -233,7 +232,7 @@ export default {
     状态: 'Status',
     租户编码: 'Tenant Code',
     查看所有请求分类: 'View All Request Classifications',
-    复制flowKey: 'Copy FlowKey',
+    复制informKey: 'Copy InformKey',
     完成告知工作流步骤后生成相应的api: 'After completing the notification workflow step, generate the corresponding api',
     复制成功: 'Copy Succeeded',
     复制失败: 'Copy Failed',
@@ -336,6 +335,10 @@ export default {
   inform: {
     政策条款: 'Policy Terms',
     告知流名称: 'Inform Stream Name',
+    告知类型: 'Type of Notification',
+    一般: 'General',
+    单独: 'Separate',
+    应用类型: 'Application Type',
   },
   risk: {
     风险分析处理: 'Risk Analysis and Treatment',

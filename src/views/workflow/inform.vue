@@ -1,7 +1,7 @@
 <template>
   <div class="scene">
     <div class="scene-head">
-      <span class="title">{{$t('inform.政策条款')}}</span>
+      <span class="title">{{$t('menu.隐私政策')}}</span>
     </div>
     <div class="scene-body" :data-text="$t('crudCommon.请完成上一步')" :class="activeClass">
       <div class="scene-left common-box">
@@ -19,13 +19,14 @@
               <div v-for="(item, index) in leftList" :data-id="item.id" :key="index">
                 <el-tooltip placement="bottom" effect="light">
                   <div slot="content">
-                    {{ item.informFlowName }}
+                    {{ item.simpleName }}
                   </div>
                   <div
                     class="left-block common-block"
                     :style="{ 'background-color': item.color }"
                   >
-                    <i :class="item.icon"></i>
+                  <div>{{item.icon}}</div>
+                    <!-- <i :class="item.icon"></i> -->
                   </div>
                 </el-tooltip>
               </div>
@@ -51,7 +52,7 @@
           >
             <div v-for="(item, index) in mainList" :key="index">
               <div v-if="item.id === -2" class="mark-tips">
-                {{item.informFlowName}}
+                {{item.simpleName}}
               </div>
               <div v-else class="mark-checked">
                 <el-tooltip
@@ -59,18 +60,19 @@
                   effect="light"
                 >
                   <div slot="content">
-                    {{ item.informFlowName }}
+                    {{ item.simpleName }}
                   </div>
                   <div
                     class="main-block common-block"
                     :style="{ 'background-color': item.color }"
                   >
-                    <i :class="item.icon" style="font-size: 32px"></i>
+                  <div style="font-size: 32px">{{item.icon}}</div>
+                    <!-- <i :class="item.icon" style="font-size: 32px"></i> -->
                   </div>
                 </el-tooltip>
                 <div class="operation">
                   <el-tooltip :content="$t('crudCommon.编辑')" placement="bottom" effect="light">
-                    <el-link icon="el-icon-edit" :underline="false" :disabled="disabled" @click="editBtn(item)" />
+                    <el-link icon="el-icon-edit" :underline="false" :disabled="disabled" @click="editBtn('edit')" />
                   </el-tooltip>
                   <div style="padding-bottom: 2px;color: #999;">|</div>
                   <el-tooltip :content="$t('crudCommon.查看')" placement="bottom" effect="light">
@@ -92,15 +94,17 @@
               @close="cancel"
               :fullscreen="isFullscreen">
               <div class="dialog-header" slot="title">
-                  <span class="dialog-header-title">{{$t('inform.政策条款')}}</span>
+                  <span class="dialog-header-title">{{$t('menu.隐私政策')}}</span>
                   <div class="dialog-header-screen" @click="() => isFullscreen = !isFullscreen">
                       <i :class="isFullscreen ? 'el-icon-news' : 'el-icon-full-screen'" />
                   </div>
               </div>
-              <avue-form :option="option" v-model="sceneForm">
+              <avue-form v-if="formType === 'add'" :option="option" v-model="mainBodyForm">
               </avue-form>
-              <div v-if="!option.detail" slot="footer" class="dialog-footer">
-                  <el-button icon="el-icon-circle-check" type="primary" @click="submit">{{$t('assets.修改')}}</el-button>
+              <avue-form v-else :option="editOption" v-model="sceneForm">
+              </avue-form>
+              <div v-if="!option.detail||!editOption.detail" slot="footer" class="dialog-footer">
+                  <el-button icon="el-icon-circle-check" :loading="loading" type="primary" @click="submit">{{$t('assets.修改')}}</el-button>
                   <el-button icon="el-icon-circle-close" @click="cancel">{{$t('assets.取消')}}</el-button>
               </div>
             </el-dialog>
@@ -129,14 +133,14 @@ import { previousStep } from "@/util/workflow";
 import { stepsListKind } from "@/util/enum"
 import { 
   getSimpleListForFlow,
-  cloneInformFlow,
+  clonePolicyClause,
   editInformFlow
   } from "@/api/workflow/inform";
-import {tableOption} from "@/const/crud/workflow/inform"
+import {tableOption, tableEditOption} from "@/const/crud/workflow/inform"
 import { mapGetters } from "vuex";
 import { isDev, isTest } from '@/util/env'
  
-const defaultDrag = { informFlowName: i18n.t('assessment.将图标拖拽至此处'), id: -2 }
+const defaultDrag = { simpleName: i18n.t('assessment.将图标拖拽至此处'), id: -2 }
 
 export default {
   name: "Inform",
@@ -172,12 +176,15 @@ export default {
       moveId: -1,
       isIcon: true,
       option: {},
+      editOption: {},
       sceneForm: {},
+      mainBodyForm: {},
       // 业务场景信息字段
       sceneList: [],
       stepsListKind,
       flowType: 0,
       isFullscreen: false,
+      loading: false,
     };
   },
   computed: {
@@ -197,30 +204,37 @@ export default {
   created() {
     this.getSimpleListForFlow();
     this.option = tableOption(this)
+    this.editOption = tableEditOption(this)
   },
   methods: {
-    editBtn() {
+    editBtn(type) {
+      this.formType = type
       this.isIcon = false
-      this.option.detail = false
+      this.mainBodyForm.mainBodyId = null
+      type === 'add' ? this.option.detail = false : this.editOption.detail = false
     },
     viewBtn() {
+      this.formType = 'view'
       this.isIcon = false
-      this.option.detail = true
+      this.editOption.detail = true
     },
     delBtn() {
       this.mainList = [defaultDrag]
-      this.$emit('getInformFlowId', {id: -2, flowKey: ''}, previousStep(this.stepsListKind, this.flowType, 5))
+      this.$emit('getInformFlowId', {simpleId: -2, informKey: ''}, previousStep(this.stepsListKind, this.flowType, 5))
     },
-    submit(form,done) {
+    submit() {
+      this.loading = true
+      this.formType === 'add' ?  this.clonePolicyClause() : this.editInformFlow()
+    },
+    editInformFlow() {
       editInformFlow(this.sceneForm).then(res => {
         this.isIcon = true
         // this.mainList = [defaultDrag, form]
-
+        this.$message.success(res.data.message)
         this.mainList = [this.sceneForm]
         this.getSimpleListForFlow();
-        done()
-      }).catch(() => {
-        done()
+      }).finally(() => {
+        this.loading = false
       })
     },
     cancel() {
@@ -244,41 +258,49 @@ export default {
       this.flowType = flowType
       if (informFlowId === null) {
         this.mainList = [defaultDrag]
-        this.$emit('getFlowKey', '')
+        this.$emit('getInformKey', '')
         return
       } 
 
       await this.getSimpleListForFlow()
       
-      const item = this.leftList.find((m) => m.id == informFlowId);
+      const item = this.leftList.find((m) => m.simpleId == informFlowId);
       if (item) {
         // this.mainList = [defaultDrag, item]
         this.mainList = [item]
         this.sceneForm = item
-        this.$emit('getFlowKey', item)
+        this.$emit('getInformKey', item)
       }
     },
 
-    // 克隆告知流
-    cloneInformFlow(query) {
-      cloneInformFlow(query).then(res => {
+    // 克隆隐私政策
+    clonePolicyClause() {
+      clonePolicyClause( {
+            simpleId: this.sceneForm.simpleId,
+            sceneId: this.businessScenarioId,
+            assetsId: this.assetsId,
+            mainBodyId: this.mainBodyForm.mainBodyId
+          }).then(res => {
         // this.mainList = [defaultDrag, res.data.data]
+        this.isIcon = true
         this.mainList = [res.data.data]
         this.sceneForm = res.data.data
         this.$emit('getInformFlowId', res.data.data, 6)
+        this.$message.success(res.data.message)
+      }).finally(() => {
+        this.loading = false
       })
     },
 
     leftEnd(e) {
+      console.log(e,this.leftList,'eeeee');
       if (!e.to.className.includes('main-drag')) return;
-      const item = this.leftList.find((m) => m.id == e.item._underlying_vm_.id);
+      const item = this.leftList.find((m) => m.simpleId == e.item._underlying_vm_.simpleId);
       if (item) {
-        this.cloneInformFlow(
-          {
-            flowId: item.id,
-            businessSceneId: this.businessScenarioId,
-            assetsId: this.assetsId,
-          })
+        this.sceneForm = item
+        console.log(item, 'item');
+        this.editBtn('add')
+
       }
     },
 

@@ -25,7 +25,9 @@
                     class="left-block common-block"
                     :style="{ 'background-color': item.sceneColor }"
                   >
-                    <i :class="item.sceneIcon"></i>
+                  <div>{{item.sceneIcon}}</div>
+
+                    <!-- <i :class="item.sceneIcon"></i> -->
                   </div>
                 </el-tooltip>
               </div>
@@ -65,7 +67,8 @@
                     class="main-block common-block"
                     :style="{ 'background-color': item.sceneColor }"
                   >
-                    <i :class="item.sceneIcon" style="font-size: 32px"></i>
+                  <div style="font-size: 32px">{{item.sceneIcon}}</div>
+                    <!-- <i :class="item.sceneIcon" style="font-size: 32px"></i> -->
                   </div>
                 </el-tooltip>
                 <div class="operation">
@@ -100,7 +103,7 @@
               <avue-form ref="sceneForm" :option="option" v-model="sceneForm" @submit="submit">
               </avue-form>
               <div v-if="!option.detail" slot="footer" class="dialog-footer">
-                  <el-button icon="el-icon-circle-check" type="primary" @click="submit('sceneForm')">{{$t('assets.修改')}}</el-button>
+                  <el-button icon="el-icon-circle-check" type="primary" :loading="loading" @click="submit('sceneForm')">{{$t('assets.修改')}}</el-button>
                   <el-button icon="el-icon-circle-close" @click="cancel">{{$t('assets.取消')}}</el-button>
               </div>
             </el-dialog>
@@ -176,6 +179,7 @@ export default {
       option: {},
       sceneForm: {},
       isFullscreen: false,
+      loading: false,
     };
   },
   computed: {
@@ -244,15 +248,15 @@ export default {
               formReduce[key] = this.sceneForm[key]
             }
           }
+          this.loading = true
           updateScene(formReduce).then(res => {
             this.isIcon = true
             // this.mainList = [defaultDrag, form]
             this.mainList = [this.sceneForm]
             this.getAllAssetsBusinessScene();
             this.$message.success(res.data.message)
-            done();
-          }).catch(() => {
-              done();
+          }).finally(() => {
+            this.loading = false
           })
         } else {
           return false

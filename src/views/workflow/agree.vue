@@ -8,7 +8,7 @@
 
       <div class="scene-main common-box">
         <div class="scene-main-content">
-          <div v-if="flowKey">
+          <div v-if="informKey">
           <div class="scene-content">
             <div class="scene-content-item">
               <div class="scene-content-item-title">{{$t('agree.新增同意记录')}}</div>
@@ -22,9 +22,9 @@
                 {{$t('agree.请求方式')}} POST <br/>
                 Content-Type： application/json <br/>
                 {{$t('agree.body参数及说明')}}{<br/>
-                  "flowKey": "5f82a447-b767-49ea-9620-0d1dc1f6c24", // {{$t('agree.告知工作流flowKey')}}<br/>
+                  "informKey": "5f82a447-b767-49ea-9620-0d1dc1f6c24", // {{$t('agree.告知工作流informKey')}}<br/>
                   "userFlag": "13167763575", // {{$t('agree.用户信息')}}<br/>
-                  "accessStatus": 1 ,// {{$t('agree.同意状态')}}<br/>
+                  <!-- "accessStatus": 1 ,// {{$t('agree.同意状态')}}<br/> -->
                 }
             </div>
             <div class="scene-content-item">
@@ -59,9 +59,9 @@
             </div>
           </div>
           <div class="scene-btn">
-            <div class="flowKey">
-              flowKey: {{flowKey}}
-              <el-button style="margin-left: 10px;" @click="copyText(flowKey)" type="text">{{$t('agree.复制flowKey')}}</el-button>
+            <div class="informKey">
+              informKey: {{informKey}}
+              <el-button style="margin-left: 10px;" @click="copyText(informKey)" type="text">{{$t('agree.复制informKey')}}</el-button>
             </div>
             <!-- <el-button  type="primary" :disabled="disabled" plain @click="overWorkflow">完成工作流</el-button> -->
           </div>
@@ -116,7 +116,7 @@ export default {
       addPowerApiUrl: '',
       // 查看所有请求分类
       allrequestTypeApiUrl: '',
-      flowKey: '',
+      informKey: '',
       tenantCode: '',
     };
   },
@@ -160,11 +160,11 @@ export default {
     },
 
     // 回显
-    echoContent(flowKey) {
-      this.flowKey = flowKey
-      console.log(flowKey, '同意flowKey')
+    echoContent(informKey) {
+      this.informKey = informKey
+      console.log(informKey, 'informKey')
       // this.agreeRecordApiUrl = `http://116.205.172.167:38083/workflow/accessRecord`
-      this.agreeRecordApiUrl = `${this.powerUrl}/workflow/accessRecord`
+      this.agreeRecordApiUrl = `${this.powerUrl}/workflow/accessRecord/processing`
       // this.addPowerApiUrl = `http://116.205.172.167:38083/workflow/accessResponse`
       this.addPowerApiUrl = `${this.powerUrl}/workflow/accessResponse`
       // this.allrequestTypeApiUrl = `http://116.205.172.167:38083/workflow/requestType/getRequestTypeListByCode?tenantCode=${this.tenantCode}`
@@ -428,7 +428,7 @@ export default {
         text-align: center;
       }
 
-      .flowKey {
+      .informKey {
         color: rgb(40, 199, 199);
         margin-bottom: 10px;
       }

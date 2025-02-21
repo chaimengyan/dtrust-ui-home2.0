@@ -25,6 +25,8 @@
                     class="left-block common-block"
                     :style="{ 'background-color': item.projectColor }"
                   >
+                  <div>{{item.projectIcon}}</div>
+
                     <i :class="item.projectIcon"></i>
                   </div>
                 </el-tooltip>
@@ -65,7 +67,8 @@
                     class="main-block common-block"
                     :style="{ 'background-color': item.projectColor }"
                   >
-                    <i :class="item.projectIcon" style="font-size: 32px"></i>
+                  <div style="font-size: 32px">{{item.projectIcon}}</div>
+                    <!-- <i :class="item.projectIcon" style="font-size: 32px"></i> -->
                   </div>
                 </el-tooltip>
                 <div class="operation">
@@ -104,7 +107,7 @@
                 </template>
               </avue-form>
               <div v-if="!option.detail" slot="footer" class="dialog-footer">
-                  <el-button type="primary" icon="el-icon-circle-check" @click="submit('assetsForm')">{{$t('assets.修改')}}</el-button>
+                  <el-button type="primary" icon="el-icon-circle-check" :loading="loading" @click="submit('assetsForm')">{{$t('assets.修改')}}</el-button>
                   <el-button icon="el-icon-circle-close" @click="cancel">{{$t('assets.取消')}}</el-button>
               </div>
             </el-dialog>
@@ -262,7 +265,7 @@
       </template>
         
       <div slot="footer" class="dialog-footer">
-          <el-button icon="el-icon-circle-plus-outline" type="primary" @click="submitImport">{{$t('assets.保存')}}</el-button>
+          <el-button icon="el-icon-circle-plus-outline"  type="primary" @click="submitImport">{{$t('assets.保存')}}</el-button>
           <el-button icon="el-icon-circle-close" @click="cancelImport">{{$t('assets.取消')}}</el-button>
       </div>
     </el-dialog>
@@ -366,6 +369,7 @@ export default {
       isFullscreen: false,
       showMap:false,
       map: null,
+      loading: false,
     };
   },
   computed: {
@@ -447,7 +451,6 @@ export default {
     handleExceed() {},
     submitImport() {
       if(this.rightCloneData.value === '0') {
-        this.fullscreenLoading = true
         this.$refs.appform.validate((valid) => {
           if (valid) {
             const param = new FormData()
@@ -456,11 +459,13 @@ export default {
             param.append('appName', this.appform.appName)
             param.append('privacyTextName', this.appform.privacyTextName)
             console.log(param, 'appformappformappform');
+            this.fullscreenLoading = true
             appUpload(param).then(res => {
               this.$message.success(res.data.message)
               this.importAssetsDialog = false
               this.fullscreenLoading = false
-              
+            }).finally(() => {
+              this.fullscreenLoading = false
             })
           } else {
             return false;
@@ -545,15 +550,15 @@ export default {
               formReduce[key] = this.projectForm[key]
             }
           }
+          this.loading = true
           updateAsset(formReduce).then(res => {
             this.isIcon = true
             // this.mainList = [defaultDrag, form]
             this.mainList = [this.projectForm]
             this.getProjectAttributesBySceneId(this.sceneId);
             this.$message.success(res.data.message)
-            done();
-          }).catch(() => {
-              done();
+          }).finally(() => {
+            this.loading = false
           })
         } else {
           return false

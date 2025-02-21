@@ -113,7 +113,7 @@
           :assetsId="assetsId"
           :disabled="disabledObj[5]"
           @getInformFlowId="getInformFlowId"
-          @getFlowKey="getFlowKey"
+          @getInformKey="getInformKey"
           :wfIndex="5"
           :wfStep="workflowObj.steps"
         />
@@ -482,7 +482,7 @@
         this.sceneId = sceneId
         this.workflowObj.steps = steps
         this.workflowObj.businessScenarioId = sceneId
-
+console.log('业务场景');
         this.checkWorkFlowSteps(this.workflowObj)
       },
 
@@ -491,6 +491,7 @@
         this.assetsId = assetsId
         this.workflowObj.steps = steps
         this.workflowObj.assetsId = assetsId
+        console.log('资产');
 
         this.checkWorkFlowSteps(this.workflowObj)
       },
@@ -500,6 +501,7 @@
         this.evaluationId = evaluationId
         this.workflowObj.steps = steps
         this.workflowObj.evaluationId = evaluationId
+        console.log('评估');
 
         this.checkWorkFlowSteps(this.workflowObj)
       },
@@ -508,20 +510,23 @@
       passRisk(steps, workflowStatus) {
         workflowStatus && (this.workflowObj.status = workflowStatus)
         this.workflowObj.steps = steps
+        console.log('风险评估');
         this.checkWorkFlowSteps(this.workflowObj)
       },
 
       // 获取告知工作流id
       getInformFlowId(val, steps) {
         this.workflowObj.steps = steps
-        this.workflowObj.informFlowId = val.id
-        this.getFlowKey(val)
+        this.workflowObj.informFlowId = val.simpleId
+        this.getInformKey(val)
+        console.log('告知工作流');
+
         this.checkWorkFlowSteps(this.workflowObj)
       },
 
       // 填充同意模块
-      getFlowKey(val) {
-        this.$refs.agree.echoContent(val.flowKey)
+      getInformKey(val) {
+        this.$refs.agree.echoContent(val.informKey)
       },
 
       // 结束工作流
