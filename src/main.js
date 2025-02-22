@@ -31,6 +31,15 @@ import './icons' // icon
 
 import '/public/js/lib-flexable.js'
 
+// 打包部署后清除浏览器 localStorage 缓存
+const VUE_APP_VERSION = require('../package.json').version
+const vers = window.localStorage.getItem('appVersion')
+if(VUE_APP_VERSION != vers){
+  localStorage.clear()
+  window.localStorage.setItem('appVersion', VUE_APP_VERSION)
+  location.reload()
+}
+
 // 挂载常用全局方法，import 引入
 Vue.prototype.validatenull = validatenull;
 Vue.prototype.downBlobFile = downBlobFile;

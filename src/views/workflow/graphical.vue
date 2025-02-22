@@ -145,7 +145,7 @@ export default {
       return (item) => {
         const i = this.stepsListKind[item.flowType].findIndex(x => (x.value === item.steps))
         console.log(i, this.stepsListKind[item.flowType].length,'进度');
-        const num = (i+0)*100 / this.stepsListKind[item.flowType].length
+        const num = i*100 / (this.stepsListKind[item.flowType].length-1)
         return Math.round(num)
       }
     },

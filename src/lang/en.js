@@ -142,7 +142,7 @@ export default {
     响应时限: 'Response Time Limit',
     请求响应规则: 'Request Response Rules',
     响应清单: 'Response List',
-    隐私政策模板: 'Privacy Policy Template',
+    模板管理: 'Template Management',
   },
   crudCommon: {
     序号: 'order number',
@@ -218,7 +218,7 @@ export default {
 
   },
   agree: {
-    同意管理和个人主体权利: 'Consent to Management and Individual Subject Rights',
+    同意管理和主体权利响应: 'Consent Management & Entity Rights Response',
     新增同意记录: 'Add Consent Record',
     接口URL: 'Interface URL:',
     复制apiUrl: 'Copy ApiUrl',
@@ -227,7 +227,7 @@ export default {
     告知工作流informKey: 'Inform Workflow InformKey',
     用户信息: 'User Information',
     同意状态: 'Consent Status',
-    新增主体权利: 'New Subject Rights',
+    新增主体权利请求: 'Add Entity Rights Request',
     请求类型: 'Request Type',
     状态: 'Status',
     租户编码: 'Tenant Code',

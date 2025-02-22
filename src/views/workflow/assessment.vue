@@ -67,7 +67,7 @@
                     class="main-block common-block"
                     :style="{ 'background-color': item.color }"
                   >
-                  <div style="font-size: 32px">{{item.icon}}</div>
+                  <div style="font-size: 24px">{{item.icon}}</div>
 
                     <!-- <i :class="item.icon" style="font-size: 32px"></i> -->
                   </div>
@@ -491,13 +491,16 @@ export default {
       .scene-main-content {
         height: 100%;
         overflow-y: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .main-drag {
         width: 80px;
         height: 100px;
-        margin: 0 auto;
-        margin-top: 30px;
+        // margin: 0 auto;
+        // margin-top: 30px;
         box-sizing: border-box;
         text-align: center;
         padding: 30px;

@@ -17,7 +17,7 @@
               </div>
               <div class="ai-item">
                 <span class="label">{{$t('assessment.被评估人')}}：</span>
-                <span class="value">{{assessInfo.evaluators.map(e => e.nickName).join('，')}}</span>
+                <span class="value">{{handleEvaluators()}}</span>
               </div>
               <div class="ai-item">
                 <span class="label">{{$t('risk.评估状态')}}：</span>
@@ -137,7 +137,10 @@ export default {
     // this.calculateRiskLevel()
   },
   methods: {
-
+    handleEvaluators() {
+      const evaluators = this.assessInfo.evaluators.map(e => e.nickName)
+      return evaluators.filter((item, index) => evaluators.indexOf(item) === index).join('，')
+    },
     toAssessment(val) {
       const estimateUrl = !isDev() ? !isTest() ? `https://assess.idatatrust.com` : 'http://116.205.172.167:38080' : `http://${window.location.hostname}:38080` 
       const assUrl = `${estimateUrl}/#/assessment/questionnaireStart/index?infoId=${this.evaluationId}&level=${val.level}`;

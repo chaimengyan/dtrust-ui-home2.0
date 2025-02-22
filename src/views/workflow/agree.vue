@@ -1,7 +1,7 @@
 <template>
   <div class="scene">
     <div class="scene-head">
-      <span class="title">{{$t('agree.同意管理和个人主体权利')}}</span>
+      <span class="title">{{$t('agree.同意管理和主体权利响应')}}</span>
     </div>
     <div class="scene-body" :data-text="$t('crudCommon.请完成上一步')" :class="activeClass">
       <!-- <div class="scene-left common-box"></div> -->
@@ -28,7 +28,7 @@
                 }
             </div>
             <div class="scene-content-item">
-              <div class="scene-content-item-title">{{$t('agree.新增主体权利')}}</div>
+              <div class="scene-content-item-title">{{$t('agree.新增主体权利请求')}}</div>
               {{$t('agree.接口URL')}}{{addPowerApiUrl}}
               <el-button
                 style="margin-left: 10px;"
@@ -355,13 +355,16 @@ export default {
       .scene-main-content {
         height: 100%;
         overflow-y: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .main-drag {
         width: 80px;
         height: 100px;
-        margin: 0 auto;
-        margin-top: 30px;
+        // margin: 0 auto;
+        // margin-top: 30px;
         box-sizing: border-box;
         text-align: center;
         padding: 30px;

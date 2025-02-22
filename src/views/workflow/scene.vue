@@ -67,7 +67,7 @@
                     class="main-block common-block"
                     :style="{ 'background-color': item.sceneColor }"
                   >
-                  <div style="font-size: 32px">{{item.sceneIcon}}</div>
+                  <div style="font-size: 24px">{{item.sceneIcon}}</div>
                     <!-- <i :class="item.sceneIcon" style="font-size: 32px"></i> -->
                   </div>
                 </el-tooltip>
@@ -521,13 +521,16 @@ export default {
       .scene-main-content {
         height: 100%;
         overflow-y: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .main-drag {
         width: 80px;
         height: 100px;
-        margin: 0 auto;
-        margin-top: 30px;
+        // margin: 0 auto;
+        // margin-top: 30px;
         box-sizing: border-box;
         text-align: center;
         padding: 30px;
