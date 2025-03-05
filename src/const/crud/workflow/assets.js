@@ -2,10 +2,17 @@
 import iconList from "@/const/iconList";
 import city from "@/const/json/city"
 import { getStore } from '@/util/store'
-
+import {  
+  getUserList } from "@/api/workflow/assessment";
 import {
   getDeptTreeByTenantId
 } from "@/api/workflow/assets";
+
+function getUserListFunc(item) {
+  return getUserList().then(res => {
+    item.dicData = res.data.data || []
+  })
+}
 
 // item.dicUrl 调接口
 function getSelectOption(item, tenantId) {
@@ -22,6 +29,7 @@ option.submitBtn = false
 option.emptyBtn = false
 option.column.forEach((item, index) => {
   Reflect.deleteProperty(item, 'props')
+  item.label = getStore({ name: 'language' }) == 'zh-cn' ? item.label : item.labelEn
 
   if (item.dicUrl) {
     getSelectOption(item, tenantId);
@@ -52,6 +60,13 @@ option.column.forEach((item, index) => {
     }
     item.dicData = city
     item.type = 'select'
+  }
+  if(['champion','owner'].includes(item.prop)) {
+    item.props = {
+      label:'nickName',
+      value:'userId'
+    }
+    getUserListFunc(item)
   }
 });
 _this.option = option

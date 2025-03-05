@@ -18,6 +18,7 @@ export const tableOption = (_this, tenantId, option) => {
   option.emptyBtn = false
   option.column.forEach((item, index) => {
     Reflect.deleteProperty(item, 'props')
+    item.label = getStore({ name: 'language' }) == 'zh-cn' ? item.label : item.labelEn
 
     if(item.prop === 'managingOrganization') {
       item.props = {

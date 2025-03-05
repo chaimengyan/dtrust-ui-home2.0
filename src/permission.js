@@ -39,7 +39,9 @@ router.beforeEach((to, from, next) => {
       if (store.getters.roles.length === 0) {
         store
           .dispatch("GetUserInfo")
-          .then(() => {
+          .then((res) => {
+            const l = res.sysUser.language === 'ZH_CN' ? 'zh-cn' : 'en'
+            store.commit("SET_LANGUAGE", l);
             next();
             store.dispatch("GetUserLogo")
           })
