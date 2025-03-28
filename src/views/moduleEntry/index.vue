@@ -24,18 +24,13 @@
 
 
 <script>
-import { isDev, isTest } from '@/util/env'
+import { workFlowUrl, adminUrl, assetsUrl, estimateUrl, powerUrl } from '@/util/env'
 import { mapGetters } from "vuex";
 
     export default {
         name: 'ModuleEntry',
         data() {
             return {
-              workFlowUrl: !isDev() ? !isTest() ? `https://console.idatatrust.com/#/workflow/index` : 'http://116.205.172.167:38888/#/workflow/index' : `http://${window.location.hostname}:38888/#/workflow/index`, 
-              adminUrl: !isDev() ? !isTest() ? `https://admin.idatatrust.com` : 'http://116.205.172.167:38081' : `http://${window.location.hostname}:38081` ,
-              assetsUrl: !isDev() ? !isTest() ? `https://assets.idatatrust.com` : 'http://116.205.172.167:38082' : `http://${window.location.hostname}:38082` ,
-              estimateUrl: !isDev() ? !isTest() ? `https://assess.idatatrust.com` : 'http://116.205.172.167:38080' : `http://${window.location.hostname}:38080` ,
-              powerUrl: !isDev() ? !isTest() ? `https://power.idatatrust.com` : 'http://116.205.172.167:38083' : `http://${window.location.hostname}:38083` ,
               moduleList: [],
             }
         },
@@ -46,38 +41,47 @@ import { mapGetters } from "vuex";
           
           this.moduleList = [
             {
+              id: 10272,
+              path: '/workflow',
               icon: 'iconfont icon-ty-fenzu',
               title: this.$t('navbar.工作流'),
-              link: this.workFlowUrl,
+              link: workFlowUrl,
               describe: this.$t('homePage.跨模块工作流管理平台第三方工具API接入')
             },
              {
+              id: 10007,
+              path: '/assessment',
               icon: 'iconfont icon-zd-shoushugongzuoliang',
               title: this.$t('menu.评估及风险治理'),
-              link: this.estimateUrl,
+              link: estimateUrl,
               describe: this.$t('homePage.问卷管理PIA及多用途合规评估风险治理')
             }, {
+              id: 10118,
+              path: '/assets',
               icon: 'iconfont icon-zd-shujuchuli2',
               title: this.$t('menu.数据发现及映射'),
-              link: this.assetsUrl,
+              link: assetsUrl,
               describe: this.$t('homePage.个人信息分类分级数据清单发现处理活动记录及数据流图')
             }, {
+              id: 10101,
+              path: '/inform',
               icon: 'iconfont icon-zd-yingyongchengxu',
               title: this.$t('menu.告知同意及主体权利'),
-              link: this.powerUrl,
+              link: powerUrl,
               describe: this.$t('homePage.隐私政策管理告知及同意记录数据主体权利响应')
             }, 
             {
+              id: 1000,
+              path: '/admin',
               icon: 'el-icon-s-tools',
               title: this.$t('navbar.访问控制'),
-              link: this.adminUrl,
+              link: adminUrl,
               describe: this.$t('homePage.用于账号角色菜单组织架构等的管理')
             },
           ]
           this.$store.dispatch("GetMenu", { type: true, id: -1 }).then(data => {
-            if(this.menu.find(x => x.path.slice(0, 6) === '/admin') === undefined) {
-              this.moduleList = this.moduleList.filter(y => y.icon !== 'el-icon-s-tools')
-            }
+            console.log(data, 'data');
+            this.moduleList = this.moduleList.filter(x => this.menu.find(y => y.id === x.id))
           });
           
         },

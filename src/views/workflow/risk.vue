@@ -86,7 +86,7 @@ import {
   } from "@/api/workflow/risk";
 import { mapGetters } from "vuex";
 import { assessStatusList } from "@/util/enum"
-import { isDev, isTest } from '@/util/env'
+import { estimateUrl } from '@/util/env'
 
 export default {
   name: "Risk",
@@ -142,7 +142,6 @@ export default {
       return evaluators.filter((item, index) => evaluators.indexOf(item) === index).join('，')
     },
     toAssessment(val) {
-      const estimateUrl = !isDev() ? !isTest() ? `https://assess.idatatrust.com` : 'http://116.205.172.167:38080' : `http://${window.location.hostname}:38080` 
       const assUrl = `${estimateUrl}/#/assessment/questionnaireStart/index?infoId=${this.evaluationId}&level=${val.level}`;
       window.open(assUrl, "_blank");
     },

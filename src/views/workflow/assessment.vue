@@ -146,7 +146,7 @@ import {
 import { mapGetters } from "vuex";
 import {isMobile, isEmail} from '@/util/validate'
 import ReleaseForm from "@/views/workflow/components/releaseForm";
-import { isDev, isTest } from '@/util/env'
+import { estimateUrl } from '@/util/env'
 
 const defaultDrag = { qnName: i18n.t('assessment.将图标拖拽至此处'), id: -2 }
 
@@ -250,7 +250,6 @@ export default {
       this.isIcon = true
     },
     addBtn() {
-      const estimateUrl = !isDev() ? !isTest() ? `https://assess.idatatrust.com` : 'http://116.205.172.167:38080' : `http://${window.location.hostname}:38080`
       const assUrl = `${estimateUrl}/#/assessment/questionnaire/index`;
       window.open(assUrl, "_blank");
     },

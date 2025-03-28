@@ -181,7 +181,7 @@
   import topLang from "./top-lang.vue";
   import { isEmpty } from 'lodash'
   import ExportTemplate from '@/views/exportTemplate/index'
-  import { isDev, isTest } from '@/util/env'
+  import { workFlowUrl, adminUrl, assetsUrl, estimateUrl, powerUrl } from '@/util/env'
 
   const locationUrl = `${window.location.protocol}//${window.location.hostname}:`
   
@@ -198,12 +198,7 @@
     name: "top",
     data() {
       return {
-        workFlowUrl: !isDev() ? !isTest() ? `https://console.idatatrust.com` : 'http://116.205.172.167:38888' : `http://${window.location.hostname}:38888`, 
-        adminUrl: !isDev() ? !isTest() ? `https://admin.idatatrust.com` : 'http://116.205.172.167:38081' : `http://${window.location.hostname}:38081` ,
-        assetsUrl: !isDev() ? !isTest() ? `https://assets.idatatrust.com` : 'http://116.205.172.167:38082' : `http://${window.location.hostname}:38082` ,
-        estimateUrl: !isDev() ? !isTest() ? `https://assess.idatatrust.com` : 'http://116.205.172.167:38080' : `http://${window.location.hostname}:38080` ,
-        powerUrl: !isDev() ? !isTest() ? `https://power.idatatrust.com` : 'http://116.205.172.167:38083' : `http://${window.location.hostname}:38083` ,
-
+        adminUrl,
         fullscreenLoading: false,
         deptName: '组织架构',
         moduleList: [],
@@ -229,7 +224,7 @@
                 value: 0,
                 permissions: 'assess_evaluation_start',
                 icon: 'icon-dpia',
-                href: `${this.estimateUrl}/#/assessment/questionnaireStart/index?typeIds=${25}`,
+                href: `${estimateUrl}/#/assessment/questionnaireStart/index?typeIds=${25}`,
                 // href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${29}`,
             },
             {
@@ -237,7 +232,7 @@
                 value: 1,
                 permissions: 'assess_evaluation_start',
                 icon: 'icon-cjfxpg',
-                href: `${this.estimateUrl}/#/assessment/questionnaireStart/index?typeIds=${26}`,
+                href: `${estimateUrl}/#/assessment/questionnaireStart/index?typeIds=${26}`,
                 // href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${30}`,
             },
             {
@@ -245,7 +240,7 @@
                 value: 3,
                 permissions: 'assess_evaluation_start',
                 icon: '',
-                href: `${this.estimateUrl}/#/assessment/questionnaireStart/index?typeIds=${7}`,
+                href: `${estimateUrl}/#/assessment/questionnaireStart/index?typeIds=${7}`,
                 // href: `http://116.205.172.167:38080/#/assessment/questionnaireStart/index?typeIds=${26}`,
             },
             {
@@ -253,16 +248,16 @@
                 value: 2,
                 permissions: 'true',
                 icon: 'icon-map',
-                href: `${this.assetsUrl}/#/assetsCharts/earth/index`,
+                href: `${assetsUrl}/#/assetsCharts/earth/index`,
                 // href: `http://116.205.172.167:38082/#/assetsCharts/earth/index`,
             },
             
             {
                 label: this.$t('navbar.网站APP小程序SDK合规评估'),
                 value: 4,
-                permissions: 'true',
+                permissions: 'workflow-page',
                 icon: 'icon-code',
-                href: `${this.workFlowUrl}/#/workflow/index`,
+                href: `${workFlowUrl}/#/workflow/index`,
                 // href: 'http://116.205.172.167:38888/#/wel/index',
             },
             {
@@ -270,7 +265,7 @@
                 value: 5,
                 permissions: 'true',
                 icon: 'icon-compass',
-                href: `${this.workFlowUrl}/#/wel/index`,
+                href: `${workFlowUrl}/#/wel/index`,
                 // href: 'http://116.205.172.167:38888/#/wel/index',
             },
             {
@@ -278,7 +273,7 @@
                 value: 6,
                 permissions: 'true',
                 icon: 'icon-category',
-                href: `${this.assetsUrl}/#/assetsCharts/assetbusin/index`,
+                href: `${assetsUrl}/#/assetsCharts/assetbusin/index`,
                 // href: `http://116.205.172.167:38082/#/assetsCharts/assetbusin/index`,
             }]
     },
@@ -358,7 +353,7 @@
               label: '评估及风险治理',
               enName: 'Assessment & RM',
               path: '/assessment',
-              moduleHost: this.estimateUrl
+              moduleHost: estimateUrl
               // moduleHost: 'http://116.205.172.167:38080'
           },
           {
@@ -366,7 +361,7 @@
               label: '数据发现及映射',
               enName: 'Data Discovery and Mapping',
               path: '/assets',
-              moduleHost: this.assetsUrl
+              moduleHost: assetsUrl
               // moduleHost: 'http://116.205.172.167:38082'
           },
           {
@@ -374,7 +369,7 @@
               label: '告知同意及主体权利',
               enName: 'Notice Consent & DSR',
               path: '/inform',
-              moduleHost: this.powerUrl
+              moduleHost: powerUrl
               // moduleHost: 'http://116.205.172.167:38083'
           },
         ]

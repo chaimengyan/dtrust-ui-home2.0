@@ -287,7 +287,7 @@ import {
   } from "@/api/workflow/assets";
 import {tableOption} from "@/const/crud/workflow/assets"
 import { mapGetters } from "vuex";
-import { isDev, isTest } from '@/util/env'
+import { assetsUrl} from '@/util/env'
 
 const defaultDrag = { projectName: i18n.t('assessment.将图标拖拽至此处'), projectId: -2 }
 
@@ -569,7 +569,6 @@ export default {
       this.isIcon = true
     },
     addBtn() {
-      const assetsUrl = !isDev() ? !isTest() ? `https://assets.idatatrust.com` : 'http://116.205.172.167:38082' : `http://${window.location.hostname}:38082`
       const assUrl = `${assetsUrl}/#/assets/assetsManagement`;
       window.open(assUrl, "_blank");
     },

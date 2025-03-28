@@ -86,7 +86,7 @@
 
 import { mapGetters } from "vuex";
 import {getTenantById} from "@/api/admin/menu"
-import { isDev, isTest } from '@/util/env'
+import { powerUrl } from '@/util/env'
 
 export default {
   name: "Scene",
@@ -108,8 +108,6 @@ export default {
   },
   data() {
     return {
-      powerUrl: !isDev() ? !isTest() ? `https://power.idatatrust.com` : 'http://116.205.172.167:38083' : `http://${window.location.hostname}:38083` ,
-
       // 新增同意记录
       agreeRecordApiUrl: '',
       // 新增主体权利
@@ -164,11 +162,11 @@ export default {
       this.informKey = informKey
       console.log(informKey, 'informKey')
       // this.agreeRecordApiUrl = `http://116.205.172.167:38083/workflow/accessRecord`
-      this.agreeRecordApiUrl = `${this.powerUrl}/workflow/accessRecord/processing`
+      this.agreeRecordApiUrl = `${powerUrl}/workflow/accessRecord/processing`
       // this.addPowerApiUrl = `http://116.205.172.167:38083/workflow/accessResponse`
-      this.addPowerApiUrl = `${this.powerUrl}/workflow/accessResponse`
+      this.addPowerApiUrl = `${powerUrl}/workflow/accessResponse`
       // this.allrequestTypeApiUrl = `http://116.205.172.167:38083/workflow/requestType/getRequestTypeListByCode?tenantCode=${this.tenantCode}`
-      this.allrequestTypeApiUrl = `${this.powerUrl}/workflow/requestType/getRequestTypeListByCode?tenantCode=${this.tenantCode}`
+      this.allrequestTypeApiUrl = `${powerUrl}/workflow/requestType/getRequestTypeListByCode?tenantCode=${this.tenantCode}`
     },
   },
 };

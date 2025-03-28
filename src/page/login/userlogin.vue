@@ -78,7 +78,8 @@
   import {bindDingDing} from '@/api/login'
   import {randomLenNum} from "@/util/util";
   import {mapGetters} from "vuex";
-
+  import {validatenull} from "@/util/validate";
+  
   export default {
     name: "userlogin",
     props: {
@@ -125,7 +126,7 @@
       refreshCode() {
         this.loginForm.code = "";
         this.loginForm.randomStr = randomLenNum(this.code.len, true);
-        this.code.src = `${this.codeUrl}?randomStr=${this.loginForm.randomStr}`;
+        this.code.src = `${process.env.VUE_APP_BASE_URL}${this.codeUrl}?randomStr=${this.loginForm.randomStr}`;
       },
       showPassword() {
         this.passwordType == ""
@@ -152,7 +153,13 @@
                     window.location.href = window.name          
                   });
                 } else {
-                  window.location.href = window.name
+                  if(validatenull(window.name)) {
+                    this.$router.push({
+                      path: "/"
+                    });
+                  }else {
+                    window.location.href = window.name
+                  }
                 }
                 // this.$router.push({path: this.tagWel.value});
                 // history.back()
